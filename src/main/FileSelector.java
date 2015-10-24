@@ -5,11 +5,14 @@
  */
 package main;
 
-import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import javax.accessibility.Accessible;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 
 
 /**
@@ -17,18 +20,29 @@ import javax.swing.JFileChooser;
  * @author Ultoros
  */
 public class FileSelector extends GUI implements Accessible {
-    private int returnvalue;
-    private String filePath;
+        private File file;
+        private BufferedImage image = null;
+        private int returned;
+        private JLabel pic;
     
     public FileSelector(){
-   JFileChooser chooser = new JFileChooser();
-   returnvalue = chooser.showOpenDialog(this);
-    if (returnvalue == JFileChooser.APPROVE_OPTION){
-       this.filePath = chooser.getSelectedFile().getPath();
-       }
-    }
-    
-   public String returnFileName(){
-       return this.filePath;
-   }
-}
+    JFileChooser chooser = new JFileChooser();
+    returned = chooser.showOpenDialog(this);    
+    if (returned == JFileChooser.APPROVE_OPTION) {     
+   
+    try{
+       this.file = chooser.getSelectedFile();
+       this.image = ImageIO.read(file);
+       ImageIcon icon = new ImageIcon(image);
+       this.pic = new JLabel(icon);
+       super.drawArea.add(pic);         
+       super.drawArea.repaint();
+       
+       
+       
+    }catch(IOException e){
+        
+    }}
+    } //constr
+} // class
+
