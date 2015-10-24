@@ -5,7 +5,10 @@
  */
 package main;
 
+import java.awt.BorderLayout;
+import java.io.File;
 import javax.accessibility.Accessible;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
 
@@ -13,17 +16,19 @@ import javax.swing.JFileChooser;
  *
  * @author Ultoros
  */
-public class File extends GUI implements Accessible {
+public class FileSelector extends GUI implements Accessible {
     private int returnvalue;
+    private String filePath;
     
-    public File(){
+    public FileSelector(){
    JFileChooser chooser = new JFileChooser();
    returnvalue = chooser.showOpenDialog(this);
     if (returnvalue == JFileChooser.APPROVE_OPTION){
-       System.out.println("You chose to open this file: " +
-            chooser.getSelectedFile().getName());
-        }
+       this.filePath = chooser.getSelectedFile().getPath();
+       }
     }
     
-   
+   public String returnFileName(){
+       return this.filePath;
+   }
 }

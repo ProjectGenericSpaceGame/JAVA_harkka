@@ -5,11 +5,27 @@
  */
 package main;
 
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 /**
  *
  * @author RAndom MC
  */
 public class GUI extends javax.swing.JFrame {
+
+    private Image importedImage;
+    private MediaTracker mt;
 
     /**
      * Creates new form GUI
@@ -336,7 +352,11 @@ public class GUI extends javax.swing.JFrame {
         uploadBtn.setText("Choose...");
         uploadBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                uploadFileActionPerformed(evt);
+                try {
+                    uploadFileActionPerformed(evt);
+                } catch (IOException ex) {
+                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -551,12 +571,28 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) throws IOException {                                            
         // TODO add your handling code here:
-        File tiedosto = new File();
-        System.out.println(tiedosto);
-       
+        FileSelector tiedosto = new FileSelector();
+        String imgPath = tiedosto.returnFileName();
+        importedImage = ImageIO.read(new File(imgPath));
+        this.mt = new MediaTracker(this);
+        this.mt.addImage(this.importedImage, 0);
+        System.out.println(importedImage);
+        try {
+        this.mt.waitForAll();
+        } catch (InterruptedException e) {
+            // nothing...
+        }
+      drawImage(importedImage);
     } 
+    
+    private void drawImage(Image importedImage){
+      JLabel picLabel = new JLabel(new ImageIcon(importedImage));
+        this.drawArea.add(picLabel);
+        this.drawArea.repaint(); 
+       
+    }
     
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
