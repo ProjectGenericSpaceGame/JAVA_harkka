@@ -334,6 +334,11 @@ public class GUI extends javax.swing.JFrame {
         });
 
         uploadBtn.setText("Choose...");
+        uploadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadFileActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout upperNaviLayout = new javax.swing.GroupLayout(upperNavi);
         upperNavi.setLayout(upperNaviLayout);
@@ -546,6 +551,13 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
+    private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        // TODO add your handling code here:
+        File tiedosto = new File();
+        System.out.println(tiedosto);
+       
+    } 
+    
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
     }                                           
@@ -553,7 +565,7 @@ public class GUI extends javax.swing.JFrame {
     private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
         giveProjectName.setVisible(true);
-    }                                          
+    } 
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {                                     
         // TODO add your handling code here:
