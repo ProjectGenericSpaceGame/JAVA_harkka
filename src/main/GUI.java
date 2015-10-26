@@ -576,7 +576,8 @@ public class GUI extends javax.swing.JFrame {
         Graphics g = this.drawArea.getGraphics();
         g.drawImage(tiedosto.getImage(), 10, 10, this);
         //demoa
-        ShapeFile file = new ShapeFile(tiedosto.getImage(),5);
+        ShapeFile file = new ShapeFile(tiedosto.getImage(),1);
+        this.availableFilesModel.addElement(file.getShapeName());
         //int[][] point = new int[1][2];
         //point[0][0]= 30;
         //point[0][1] = 20;
@@ -647,6 +648,8 @@ public class GUI extends javax.swing.JFrame {
         Project newProj = new Project(this.newProjectNameField.getText());
         mainComponents.newProject(newProj);
         this.availableProjectsModel.addElement(newProj.getName());
+        this.availableProjects.setSelectedIndex(mainComponents.getProjectAmount()-1);
+        mainComponents.setActiveProject(mainComponents.getProjectAmount()-1);        
         giveProjectName.dispose();
     }
    
