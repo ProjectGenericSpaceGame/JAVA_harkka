@@ -8,9 +8,13 @@ package main;
 
 
 
+import java.awt.Graphics;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
 
 
 /**
@@ -26,6 +30,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        this.mainComponents = new MainComponents();
     }
 
     /**
@@ -63,7 +68,8 @@ public class GUI extends javax.swing.JFrame {
         settigns = new javax.swing.JButton();
         leftNavi = new javax.swing.JPanel();
         filesPanel = new javax.swing.JScrollPane();
-        availableFiles = new javax.swing.JList();
+        availableFilesModel = new DefaultListModel();
+        availableFiles = new JList(availableFilesModel);
         projectsPanel = new javax.swing.JScrollPane();
         availableProjects = new javax.swing.JList();
         projectsLabel = new javax.swing.JLabel();
@@ -422,11 +428,13 @@ public class GUI extends javax.swing.JFrame {
         leftNavi.setToolTipText("");
 
         availableFiles.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        availableFiles.setModel(new javax.swing.AbstractListModel() {
+        /*availableFiles.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
-        });
+        });*/
+        //availableFiles.setModel(new javax.swing.DefaultListModel<>());
+                
         filesPanel.setViewportView(availableFiles);
 
         availableProjects.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -564,6 +572,18 @@ public class GUI extends javax.swing.JFrame {
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
         FileSelector tiedosto = new FileSelector();
+        Graphics g = this.drawArea.getGraphics();
+        g.drawImage(tiedosto.getImage(), 10, 10, this);
+        //demoa
+        ShapeFile file = new ShapeFile(tiedosto.getImage(),5);
+        //int[][] point = new int[1][2];
+        //point[0][0]= 30;
+        //point[0][1] = 20;
+        //file.setPoints(point);
+        //System.out.println(file.getPoints().get(0));
+        //int test = file.removePoint(29, 21);
+        //System.out.println(file.getPoints().size());
+        
        
     } 
     
@@ -587,6 +607,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void refDialOKActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
+        
         upload.dispose();
     }                                         
 
@@ -622,8 +643,12 @@ public class GUI extends javax.swing.JFrame {
 
     private void giveProjectNameOKActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         // TODO add your handling code here:
+        Project newProj = new Project(this.newProjectNameField.getText());
+        mainComponents.newProject(newProj);
+        this.availableFilesModel.addElement(newProj.getName());
         giveProjectName.dispose();
-    }  
+    }
+   
     /**
      * @param args the command line arguments
      */
@@ -658,14 +683,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
          //tästä alaspäin on demoa
-                ShapeFile file = new ShapeFile("blaablaa",5);
-                int[][] point = new int[1][2];
-                point[0][0]= 30;
-                point[0][1] = 20;
-                file.setPoints(point);
-                System.out.println(file.getPoints().get(0));
-                int test = file.removePoint(29, 21);
-                System.out.println(file.getPoints().size());
+        
     }
 
     // Variables declaration - do not modify                     
@@ -694,6 +712,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton writeJSONBtn;
     private javax.swing.JDialog writeJSONconfirm;
     private javax.swing.JList availableFiles;
+    private javax.swing.DefaultListModel availableFilesModel;
     private javax.swing.JList availableProjects;
     javax.swing.JPanel drawArea;
     private javax.swing.JLabel filesLabel;
@@ -711,5 +730,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton giveProjectNameCancel;
     private javax.swing.JButton giveProjectNameOK;
     private javax.swing.JSeparator jSeparator3;
+    //variables that main can ask from GUI
+    private MainComponents mainComponents;
     // End of variables declaration                   
 }

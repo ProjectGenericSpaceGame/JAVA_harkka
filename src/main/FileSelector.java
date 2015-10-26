@@ -33,16 +33,19 @@ public class FileSelector extends GUI implements Accessible {
     try{
        this.file = chooser.getSelectedFile();
        this.image = ImageIO.read(file);
-       ImageIcon icon = new ImageIcon(image);
-       this.pic = new JLabel(icon);
-       super.drawArea.add(pic);         
-       super.drawArea.repaint();
+       //ImageIcon icon = new ImageIcon(image);
+       //his.pic = new JLabel(icon);
+       //super.drawArea.add(pic);         
+       //super.drawArea.repaint();
        
        
        
     }catch(IOException e){
         
     }}
+    }
+    public BufferedImage getImage(){
+        return this.image;
     } //constr
 } // class
 
