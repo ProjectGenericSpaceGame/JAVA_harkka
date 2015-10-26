@@ -71,7 +71,8 @@ public class GUI extends javax.swing.JFrame {
         availableFilesModel = new DefaultListModel();
         availableFiles = new JList(availableFilesModel);
         projectsPanel = new javax.swing.JScrollPane();
-        availableProjects = new javax.swing.JList();
+        availableProjectsModel = new DefaultListModel();
+        availableProjects = new javax.swing.JList(availableProjectsModel);
         projectsLabel = new javax.swing.JLabel();
         filesLabel = new javax.swing.JLabel();
         writeJSONMainBtn = new javax.swing.JButton();
@@ -438,11 +439,11 @@ public class GUI extends javax.swing.JFrame {
         filesPanel.setViewportView(availableFiles);
 
         availableProjects.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        availableProjects.setModel(new javax.swing.AbstractListModel() {
+        /*availableProjects.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
-        });
+        });*/
         projectsPanel.setViewportView(availableProjects);
 
         projectsLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -645,7 +646,7 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         Project newProj = new Project(this.newProjectNameField.getText());
         mainComponents.newProject(newProj);
-        this.availableFilesModel.addElement(newProj.getName());
+        this.availableProjectsModel.addElement(newProj.getName());
         giveProjectName.dispose();
     }
    
@@ -714,6 +715,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JList availableFiles;
     private javax.swing.DefaultListModel availableFilesModel;
     private javax.swing.JList availableProjects;
+    private javax.swing.DefaultListModel availableProjectsModel;
     javax.swing.JPanel drawArea;
     private javax.swing.JLabel filesLabel;
     private javax.swing.JButton writeJSONMainBtn;
