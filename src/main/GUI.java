@@ -9,6 +9,9 @@ package main;
 
 
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,10 +72,22 @@ public class GUI extends javax.swing.JFrame {
         leftNavi = new javax.swing.JPanel();
         filesPanel = new javax.swing.JScrollPane();
         availableFilesModel = new DefaultListModel();
+        availableFilesListener = new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                availableFilesEvent(e);
+            }
+        };
         availableFiles = new JList(availableFilesModel);
         projectsPanel = new javax.swing.JScrollPane();
         availableProjectsModel = new DefaultListModel();
         availableProjects = new javax.swing.JList(availableProjectsModel);
+        availableProjectsListener = new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                availableProjectsEvent(e);
+            }
+        };
         projectsLabel = new javax.swing.JLabel();
         filesLabel = new javax.swing.JLabel();
         writeJSONMainBtn = new javax.swing.JButton();
@@ -569,7 +584,14 @@ public class GUI extends javax.swing.JFrame {
         
         pack();
     }// </editor-fold>                        
-
+    
+    private void availableFilesEvent(MouseEvent e){
+        mainComponents.changeFile(availableFiles.getSelectedIndex(),this.drawArea.getGraphics());//Uudelleen piirtäminen tehdään mainComponentissa jotta GUIn koodista ei tulisi clusterfuckkia
+    };
+     private void availableProjectsEvent(MouseEvent e){
+        mainComponents.changeProject(availableProjects.getSelectedIndex(),this.drawArea.getGraphics());//sama kuin edellä
+    };
+    
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
         FileSelector tiedosto = new FileSelector();
@@ -578,6 +600,9 @@ public class GUI extends javax.swing.JFrame {
         //demoa
         ShapeFile file = new ShapeFile(tiedosto.getImage(),1);
         this.availableFilesModel.addElement(file.getShapeName());
+        this.availableFiles.setSelectedIndex(mainComponents.getProjectAmount()-1);
+        mainComponents.newFile(file);
+        mainComponents.setActiveFile(mainComponents.getProjectAmount()-1);
         //int[][] point = new int[1][2];
         //point[0][0]= 30;
         //point[0][1] = 20;
@@ -717,8 +742,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JDialog writeJSONconfirm;
     private javax.swing.JList availableFiles;
     private javax.swing.DefaultListModel availableFilesModel;
+    private MouseListener availableFilesListener;
     private javax.swing.JList availableProjects;
     private javax.swing.DefaultListModel availableProjectsModel;
+    private MouseListener availableProjectsListener;
     javax.swing.JPanel drawArea;
     private javax.swing.JLabel filesLabel;
     private javax.swing.JButton writeJSONMainBtn;

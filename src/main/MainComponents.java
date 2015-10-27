@@ -5,6 +5,7 @@
  */
 package main;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 /**
@@ -35,7 +36,9 @@ public class MainComponents {
     public void setActiveFile(int activeFile) {
         this.activeFile = activeFile;
     }
-
+    public void newFile(ShapeFile file){
+        this.projects.get(this.getActiveProject()).addFile(file);
+    }
     public int getActiveProject() {
         return activeProject;
     }
@@ -43,6 +46,19 @@ public class MainComponents {
     public void setActiveProject(int activeProject) {
         this.activeProject = activeProject;
     }
-    
+    public void changeFile(int selectedIndex,Graphics g){//tässä piirretään uusi kuva valitun tiedoston mukaan ja vaihdetaan tarvittavat tiedostot
+        ArrayList points = projects.get(activeProject).getFile(selectedIndex).getPoints();
+        for(int i = 0;i<points.size();i++){
+            //drawing goes here
+        }
+    }
+    public void changeProject(int selectedIndex,Graphics g){
+        
+        //*
+        //vaihdetaan files listan sisältö
+        //Vaihdetaan activeProject muuttuja
+        //piirretään files listan eka tiedosto
+        //*
+    }
     
 }

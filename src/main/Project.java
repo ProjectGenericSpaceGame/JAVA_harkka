@@ -24,6 +24,15 @@ public class Project {
     public String getName(){
         return this.project;
     }
+    public int getAmount(){
+        return this.files.size();
+    }
+    public ShapeFile getFile(int index){
+        return files.get(index);
+    }
+    public void addFile(ShapeFile f){
+        this.files.add(f);
+    }
     
     
 }
