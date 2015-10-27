@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.accessibility.Accessible;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-
 
 /**
  *
@@ -23,29 +20,22 @@ public class FileSelector extends GUI implements Accessible {
         private File file;
         private BufferedImage image = null;
         private int returned;
-        private JLabel pic;
-    
-    public FileSelector(){
+// konstruktori joka sisltää tiedostojen selailun
+public FileSelector(){
     JFileChooser chooser = new JFileChooser();
     returned = chooser.showOpenDialog(this);    
     if (returned == JFileChooser.APPROVE_OPTION) {     
-   
-    try{
-       this.file = chooser.getSelectedFile();
-       this.image = ImageIO.read(file);
-       //ImageIcon icon = new ImageIcon(image);
-       //his.pic = new JLabel(icon);
-       //super.drawArea.add(pic);         
-       //super.drawArea.repaint();
-       
-       
-       
-    }catch(IOException e){
-        
-    }}
+        try{
+            this.file = chooser.getSelectedFile();
+            this.image = ImageIO.read(file);
+        }catch(IOException e){
+            // tässä ei  tapahdu mitään  
+        }
     }
-    public BufferedImage getImage(){
+}
+ // Palauttaa  kuvan.
+public BufferedImage getImage(){
         return this.image;
-    } //constr
+    }
 } // class
 

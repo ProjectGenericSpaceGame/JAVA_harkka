@@ -9,6 +9,8 @@ package main;
 
 
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -460,6 +462,11 @@ public class GUI extends javax.swing.JFrame {
         });
 
         drawTool.setText("Draw");
+        drawTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drawToolActionPerformed(evt);
+            }
+        });
 
         deletePointTool.setText("Delete");
         deletePointTool.addActionListener(new java.awt.event.ActionListener() {
@@ -584,9 +591,16 @@ public class GUI extends javax.swing.JFrame {
         //System.out.println(file.getPoints().get(0));
         //int test = file.removePoint(29, 21);
         //System.out.println(file.getPoints().size());
-        
-       
     } 
+    private void drawToolActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    
+        this.drawArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println(e.getX() + "," + e.getY());
+            }
+        });
+    }                                           
     
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
