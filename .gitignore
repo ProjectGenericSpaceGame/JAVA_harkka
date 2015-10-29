@@ -3,3 +3,7 @@ build.xml
 *.properties
 build.xml
 *.xml
+*.xml
+*.properties
+build/classes/main/GUI$15.class
+build/classes/main/GUI$15.class
