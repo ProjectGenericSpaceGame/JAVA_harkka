@@ -25,7 +25,7 @@ import javax.swing.JList;
  * @author RAndom MC
  */
 public class GUI extends javax.swing.JFrame {
-
+    private int x1, y1, x2, y2;
 
 
     /**
@@ -589,14 +589,14 @@ public class GUI extends javax.swing.JFrame {
         
         pack();
     }// </editor-fold>                        
-    
+    //tässä on listaeventit
     private void availableFilesEvent(MouseEvent e){
         mainComponents.changeFile(availableFiles.getSelectedIndex(),this.drawArea.getGraphics());//Uudelleen piirtäminen tehdään mainComponentissa jotta GUIn koodista ei tulisi clusterfuckkia
     };
      private void availableProjectsEvent(MouseEvent e){
         mainComponents.changeProject(availableProjects.getSelectedIndex(),this.drawArea.getGraphics());//sama kuin edellä
     };
-    
+    //tässä loput eventit
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
         FileSelector tiedosto = new FileSelector();
@@ -615,17 +615,22 @@ public class GUI extends javax.swing.JFrame {
         //System.out.println(file.getPoints().get(0));
         //int test = file.removePoint(29, 21);
         //System.out.println(file.getPoints().size());
-    } 
+    }
+    // tämä metodi toteuttaa tapahtuman käsittelyn kun painetaan draw -painiketta.
     private void drawToolActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        this.drawArea.addMouseListener(new MousePressedTracker());
+    }
     
-        this.drawArea.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                System.out.println(e.getX() + "," + e.getY());
-            }
-        });
-    }                                           
-    
+    class MousePressedTracker extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent e){
+            x2 = e.getX();
+            y2 = e.getY();
+            Graphics g = drawArea.getGraphics();
+            mainComponents.setCoord(x2, y2, g);
+        }
+    }
+                                               
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
     }                                           

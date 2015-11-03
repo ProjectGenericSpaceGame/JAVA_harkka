@@ -53,12 +53,46 @@ public class MainComponents {
         }
     }
     public void changeProject(int selectedIndex,Graphics g){
-        
         //*
         //vaihdetaan files listan sisältö
         //Vaihdetaan activeProject muuttuja
         //piirretään files listan eka tiedosto
         //*
     }
+    
+     public void setCoord(int x, int y, Graphics g){
+        int y1;
+        int x1;
+        int x2 = x;
+        int y2 = y;
+        ArrayList<int[][]> pointsArray = projects.get(activeProject).getFile(activeFile).getPoints();
+        if(!pointsArray.isEmpty()){
+            int[][] coords = pointsArray.get(pointsArray.size()-1);
+            x1 = coords[0][0];
+            y1 = coords[0][1];
+            g.drawLine(x1, y1, x2, y2);
+            int[][] newPoints = new int[1][2];
+            newPoints[0][0] = x2;
+            newPoints[0][1] = y2;
+            projects.get(activeProject).getFile(activeFile).setPoints(newPoints);
+        } else {
+            int[][] newPoints = new int[1][2];
+            newPoints[0][0] = x2;
+            newPoints[0][1] = y2;
+            projects.get(activeProject).getFile(activeFile).setPoints(newPoints);
+        } 
+        System.out.println("x "+x2+" y "+y2);
+    }
+    
+   /* public void checkPoints(){
+        ArrayList pointten =  this.projects.get(activeProject).getFile(activeFile).getPoints();
+        if (pointten.isEmpty()){
+            this.projects.get(activeProject).getFile(activeFile).setPoints([][]);
+        }
+        
+    }
+    */
+    
+    
     
 }

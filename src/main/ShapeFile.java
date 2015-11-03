@@ -29,7 +29,7 @@ public class ShapeFile {
         this.shapeName = "file"+fileAmount; //this is also required field and when creating file, a default name is used. Default name is generated based on how many files exists in project
         
         this.slice = true; //default value is true
-        this.points = new ArrayList<int[][]>();//obviously empty when creating file
+        this.points = new ArrayList<int[][]>();//obviously empty when creating file //[[],[]]
         this.graphics = new ArrayList<Graphics>();
     }
 
