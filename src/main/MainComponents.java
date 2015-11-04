@@ -8,6 +8,7 @@ package main;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -56,12 +57,21 @@ public class MainComponents {
         drawArea.setImg(projects.get(activeProject).getFile(selectedIndex).getImgSrc());
         drawArea.setPoints(projects.get(activeProject).getFile(selectedIndex).getPoints());
     }
-    public void changeProject(int selectedIndex,Graphics g){
+    public void changeProject(int selectedIndex,DrawArea drawArea,DefaultListModel availableFilesModel){
         //*
         //vaihdetaan files listan sisältö
         //Vaihdetaan activeProject muuttuja
         //piirretään files listan eka tiedosto
         //*
+        activeProject = selectedIndex;
+        availableFilesModel.clear();
+        if(projects.get(activeProject).getFileAmount() != 0){
+        for(int i = 0;i < projects.get(activeProject).getFileAmount();i++){
+            ShapeFile file = projects.get(activeProject).getFile(i);
+            availableFilesModel.addElement(file.getShapeName());
+        }
+        this.changeFile(0, drawArea);
+        }
     }
     
      public void setCoord(int x, int y, Graphics g){

@@ -593,11 +593,12 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>                        
     //tässä on listaeventit
     private void availableFilesEvent(MouseEvent e){
-        mainComponents.changeFile(availableFiles.getSelectedIndex(),drawArea);//Uudelleen piirtäminen tehdään mainComponentissa jotta GUIn koodista ei tulisi clusterfuckkia
+        mainComponents.changeFile(availableFiles.getSelectedIndex(),drawArea);//Uudelleen piirtäminen tehdään mainComponentin ja DrawArean yhteistyönä jotta GUIn koodista ei tulisi clusterfuckkia
         repaint();
     };
      private void availableProjectsEvent(MouseEvent e){
-        mainComponents.changeProject(availableProjects.getSelectedIndex(),this.drawArea.getGraphics());//sama kuin edellä
+        mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);//sama kuin edellä
+        this.availableFiles.setSelectedIndex(0);
         repaint();
     };
     //tässä loput eventit
@@ -697,7 +698,8 @@ public class GUI extends javax.swing.JFrame {
         mainComponents.newProject(newProj);
         this.availableProjectsModel.addElement(newProj.getName());
         this.availableProjects.setSelectedIndex(mainComponents.getProjectAmount()-1);
-        mainComponents.setActiveProject(mainComponents.getProjectAmount()-1);        
+        mainComponents.setActiveProject(mainComponents.getProjectAmount()-1);
+        mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);
         giveProjectName.dispose();
     }
    
