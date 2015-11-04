@@ -32,8 +32,8 @@ public class GUI extends javax.swing.JFrame {
      * Creates new form GUI
      */
     public GUI() {
-        initComponents();
         this.mainComponents = new MainComponents();
+        initComponents();  
     }
 
     /**
@@ -79,6 +79,7 @@ public class GUI extends javax.swing.JFrame {
             }
         };
         availableFiles = new JList(availableFilesModel);
+        availableFiles.addMouseListener(availableFilesListener);
         projectsPanel = new javax.swing.JScrollPane();
         availableProjectsModel = new DefaultListModel();
         availableProjects = new javax.swing.JList(availableProjectsModel);
@@ -88,12 +89,13 @@ public class GUI extends javax.swing.JFrame {
                 availableProjectsEvent(e);
             }
         };
+        availableProjects.addMouseListener(availableProjectsListener);
         projectsLabel = new javax.swing.JLabel();
         filesLabel = new javax.swing.JLabel();
         writeJSONMainBtn = new javax.swing.JButton();
         drawTool = new javax.swing.JToggleButton();
         deletePointTool = new javax.swing.JToggleButton();
-        drawArea = new javax.swing.JPanel();
+        drawArea = new DrawArea(null,this.mainComponents);//custom luokka
         NewProjectNameLabel1 = new javax.swing.JLabel();
         newProjectNameField = new javax.swing.JTextField();
         giveProjectNameCancel = new javax.swing.JButton();
@@ -591,23 +593,27 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>                        
     //tässä on listaeventit
     private void availableFilesEvent(MouseEvent e){
-        mainComponents.changeFile(availableFiles.getSelectedIndex(),this.drawArea.getGraphics());//Uudelleen piirtäminen tehdään mainComponentissa jotta GUIn koodista ei tulisi clusterfuckkia
+        mainComponents.changeFile(availableFiles.getSelectedIndex(),drawArea);//Uudelleen piirtäminen tehdään mainComponentissa jotta GUIn koodista ei tulisi clusterfuckkia
+        repaint();
     };
      private void availableProjectsEvent(MouseEvent e){
         mainComponents.changeProject(availableProjects.getSelectedIndex(),this.drawArea.getGraphics());//sama kuin edellä
+        repaint();
     };
     //tässä loput eventit
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
-        FileSelector tiedosto = new FileSelector();
-        Graphics g = this.drawArea.getGraphics();
-        g.drawImage(tiedosto.getImage(), 10, 10, this);
-        //demoa
-        ShapeFile file = new ShapeFile(tiedosto.getImage(),1);
-        this.availableFilesModel.addElement(file.getShapeName());
-        this.availableFiles.setSelectedIndex(mainComponents.getProjectAmount()-1);
-        mainComponents.newFile(file);
-        mainComponents.setActiveFile(mainComponents.getProjectAmount()-1);
+        if(availableProjectsModel.getSize() != 0){
+            FileSelector tiedosto = new FileSelector();
+            drawArea.setImg(tiedosto.getImage());
+            ShapeFile file = new ShapeFile(tiedosto.getImage(),mainComponents.getFilesAmount()+1);
+            this.availableFilesModel.addElement(file.getShapeName());
+            mainComponents.newFile(file);
+            this.availableFiles.setSelectedIndex(mainComponents.getFilesAmount()-1);
+            mainComponents.setActiveFile(mainComponents.getFilesAmount()-1);
+            repaint();
+        }
+        //alla on esimerkki 2ulotteista taulukosta 
         //int[][] point = new int[1][2];
         //point[0][0]= 30;
         //point[0][1] = 20;
@@ -763,7 +769,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JList availableProjects;
     private javax.swing.DefaultListModel availableProjectsModel;
     private MouseListener availableProjectsListener;
-    javax.swing.JPanel drawArea;
+    private DrawArea drawArea;
     private javax.swing.JLabel filesLabel;
     private javax.swing.JButton writeJSONMainBtn;
     private javax.swing.JScrollPane filesPanel;

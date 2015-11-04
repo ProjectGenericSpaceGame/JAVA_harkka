@@ -30,6 +30,9 @@ public class Project {
     public ShapeFile getFile(int index){
         return files.get(index);
     }
+    public int getFileAmount(){
+        return files.size();
+    }
     public void addFile(ShapeFile f){
         this.files.add(f);
     }
