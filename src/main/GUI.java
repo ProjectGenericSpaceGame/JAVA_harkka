@@ -540,7 +540,7 @@ public class GUI extends javax.swing.JFrame {
         drawArea.setBackground(new java.awt.Color(250, 250, 250));
         drawArea.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout drawAreaLayout = new javax.swing.GroupLayout(drawArea);
+        /*javax.swing.GroupLayout drawAreaLayout = new javax.swing.GroupLayout(drawArea);
         drawArea.setLayout(drawAreaLayout);
         drawAreaLayout.setHorizontalGroup(
             drawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -549,7 +549,7 @@ public class GUI extends javax.swing.JFrame {
         drawAreaLayout.setVerticalGroup(
             drawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
-        );
+        );*/
         //tässä ongelma
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -658,13 +658,15 @@ public class GUI extends javax.swing.JFrame {
 
     private void refDialOKActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-        
+        mainComponents.renameFile(this.givenRefName.getText(), availableFilesModel);
+        picScrField.setText(mainComponents.getActualActiveFile().getShapeName());
         upload.dispose();
     }                                         
 
     private void picScrFieldMouseClicked(java.awt.event.MouseEvent evt) {                                         
         // TODO add your handling code here:
          upload.setVisible(true);
+         givenRefName.setText(mainComponents.getActualActiveFile().getShapeName());
     }                                        
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                            

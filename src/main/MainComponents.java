@@ -38,12 +38,19 @@ public class MainComponents {
     public int getActiveFile() {
         return activeFile;
     }
-
+    public ShapeFile getActualActiveFile() {//If for some reason, file is needed in GUI instead of here, this is handly shortcut
+        return projects.get(activeProject).getFile(activeFile);
+    }
     public void setActiveFile(int activeFile) {
         this.activeFile = activeFile;
     }
     public void newFile(ShapeFile file){
         this.projects.get(this.getActiveProject()).addFile(file);
+    }
+    public void renameFile(String name,DefaultListModel model){
+        projects.get(activeProject).getFile(activeFile).setShapeName(name);
+        model.set(activeFile, name);
+        
     }
     public int getActiveProject() {
         return activeProject;
