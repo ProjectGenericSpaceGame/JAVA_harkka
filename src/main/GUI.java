@@ -631,7 +631,7 @@ public class GUI extends javax.swing.JFrame {
             x2 = e.getX();
             y2 = e.getY();
             Graphics g = drawArea.getGraphics();
-            mainComponents.setCoord(x2, y2, g);
+            mainComponents.setCoord(x2, y2, g, drawArea);
         }
     }
                                                

@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 
 /**
  *
@@ -95,7 +96,7 @@ public class MainComponents {
         }
     }
     
-     public void setCoord(int x, int y, Graphics g){
+     public void setCoord(int x, int y, Graphics g,DrawArea drawArea){
         int y1;
         int x1;
         int x2 = x;
@@ -115,7 +116,8 @@ public class MainComponents {
             newPoints[0][0] = x2;
             newPoints[0][1] = y2;
             projects.get(activeProject).getFile(activeFile).setPoints(newPoints);
-        } 
+        }
+        drawArea.setPoints(projects.get(activeProject).getFile(activeFile).getPoints());
         System.out.println("x "+x2+" y "+y2);
     }
     
