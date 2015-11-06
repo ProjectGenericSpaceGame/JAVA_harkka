@@ -11,6 +11,8 @@ import java.io.IOException;
 import javax.accessibility.Accessible;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -20,22 +22,31 @@ public class FileSelector extends GUI implements Accessible {
         private File file;
         private BufferedImage image = null;
         private int returned;
-// konstruktori joka sisltää tiedostojen selailun
-public FileSelector(){
-    JFileChooser chooser = new JFileChooser();
-    returned = chooser.showOpenDialog(this);    
-    if (returned == JFileChooser.APPROVE_OPTION) {     
-        try{
-            this.file = chooser.getSelectedFile();
-            this.image = ImageIO.read(file);
-        }catch(IOException e){
-            // tässä ei  tapahdu mitään  
+
+    // konstruktori joka sisltää tiedostojen selailun
+    public FileSelector(){
+        // lisätään suodatin kuville
+        FileFilter filter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()); //bmp, jpg, jpeg, wbmp, pngm, gif
+        JFileChooser chooser = new JFileChooser();
+        // poistetaan suodatin FileChooserista
+        chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
+         // lisätään suodatin FileChooseriin
+        chooser.addChoosableFileFilter(filter);
+        returned = chooser.showOpenDialog(this);    
+        if (returned == JFileChooser.APPROVE_OPTION) {     
+            try{
+                this.file = chooser.getSelectedFile();
+                this.image = ImageIO.read(file);
+            }catch(IOException e){
+                // tässä ei  tapahdu mitään  
+            }
+        } else if (returned == JFileChooser.CANCEL_OPTION){
+            System.out.println("User didnt select a file");
         }
     }
-}
- // Palauttaa  kuvan.
-public BufferedImage getImage(){
+    // Palauttaa  kuvan.
+    public BufferedImage getImage(){
         return this.image;
-    }
+        }
 } // class
 
