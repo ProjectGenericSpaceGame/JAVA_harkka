@@ -594,24 +594,21 @@ public class GUI extends javax.swing.JFrame {
     //tässä on listaeventit
     private void availableFilesEvent(MouseEvent e){
         mainComponents.changeFile(availableFiles.getSelectedIndex(),drawArea);//Uudelleen piirtäminen tehdään mainComponentin ja DrawArean yhteistyönä jotta GUIn koodista ei tulisi clusterfuckkia
+        updateRenamer();
         repaint();
     };
      private void availableProjectsEvent(MouseEvent e){
         mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);//sama kuin edellä
         this.availableFiles.setSelectedIndex(0);
+        updateRenamer();
         repaint();
     };
     //tässä loput eventit
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
         if(availableProjectsModel.getSize() != 0){
-            FileSelector tiedosto = new FileSelector();
-            drawArea.setImg(tiedosto.getImage());
-            ShapeFile file = new ShapeFile(tiedosto.getImage(),mainComponents.getFilesAmount()+1);
-            this.availableFilesModel.addElement(file.getShapeName());
-            mainComponents.newFile(file);
-            this.availableFiles.setSelectedIndex(mainComponents.getFilesAmount()-1);
-            mainComponents.setActiveFile(mainComponents.getFilesAmount()-1);
+            mainComponents.newFile(drawArea, availableFilesModel, availableFiles);
+            updateRenamer();
             repaint();
         }
         //alla on esimerkki 2ulotteista taulukosta 
@@ -659,14 +656,15 @@ public class GUI extends javax.swing.JFrame {
     private void refDialOKActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
         mainComponents.renameFile(this.givenRefName.getText(), availableFilesModel);
-        picScrField.setText(mainComponents.getActualActiveFile().getShapeName());
+        updateRenamer();
         upload.dispose();
     }                                         
 
     private void picScrFieldMouseClicked(java.awt.event.MouseEvent evt) {                                         
         // TODO add your handling code here:
-         upload.setVisible(true);
-         givenRefName.setText(mainComponents.getActualActiveFile().getShapeName());
+        if(availableProjectsModel.getSize() != 0){ 
+        upload.setVisible(true);
+        }
     }                                        
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                            
@@ -703,8 +701,20 @@ public class GUI extends javax.swing.JFrame {
         mainComponents.setActiveProject(mainComponents.getProjectAmount()-1);
         mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);
         giveProjectName.dispose();
+        drawArea.setImg(null);
+        mainComponents.setActiveFile(-1);
+        updateRenamer();
+        repaint();
     }
-   
+    private void updateRenamer(){
+        if(availableFilesModel.getSize() != 0){
+            picScrField.setText(mainComponents.getActualActiveFile().getShapeName());
+            givenRefName.setText(mainComponents.getActualActiveFile().getShapeName());
+        } else {
+            picScrField.setText("no files..");
+            givenRefName.setText("no files..");
+        }
+    }
     /**
      * @param args the command line arguments
      */

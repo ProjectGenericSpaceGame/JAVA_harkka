@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -28,6 +29,15 @@ public class MainComponents {
     public void newProject(Project pro){
         this.projects.add(pro);
     }
+    public void newFile(DrawArea drawArea, DefaultListModel availableFilesModel,JList availableFiles){
+        FileSelector tiedosto = new FileSelector();
+        drawArea.setImg(tiedosto.getImage());
+        ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1);
+        availableFilesModel.addElement(file.getShapeName());
+        projects.get(activeProject).addFile(file);
+        availableFiles.setSelectedIndex(this.getFilesAmount()-1);
+        activeFile = this.getFilesAmount()-1;
+    }
     
     public int getProjectAmount(){
         return this.projects.size();
@@ -39,17 +49,19 @@ public class MainComponents {
         return activeFile;
     }
     public ShapeFile getActualActiveFile() {//If for some reason, file is needed in GUI instead of here, this is handly shortcut
+        if(activeFile != -1){
         return projects.get(activeProject).getFile(activeFile);
+        }
+        return null;
     }
     public void setActiveFile(int activeFile) {
         this.activeFile = activeFile;
     }
-    public void newFile(ShapeFile file){
-        this.projects.get(this.getActiveProject()).addFile(file);
-    }
     public void renameFile(String name,DefaultListModel model){
+        if(activeFile != -1){
         projects.get(activeProject).getFile(activeFile).setShapeName(name);
         model.set(activeFile, name);
+        }
         
     }
     public int getActiveProject() {
@@ -78,6 +90,8 @@ public class MainComponents {
             availableFilesModel.addElement(file.getShapeName());
         }
         this.changeFile(0, drawArea);
+        } else {
+            drawArea.setImg(null);
         }
     }
     
