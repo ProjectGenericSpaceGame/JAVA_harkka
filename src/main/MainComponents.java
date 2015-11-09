@@ -34,6 +34,8 @@ public class MainComponents {
     public void newFile(DrawArea drawArea, DefaultListModel availableFilesModel,JList availableFiles){
         FileSelector tiedosto = new FileSelector();
         drawArea.setImg(tiedosto.getImage());
+        ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
+        drawArea.setPoints(emptyAr);
         ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1);
         availableFilesModel.addElement(file.getShapeName());
         projects.get(activeProject).addFile(file);
@@ -94,6 +96,8 @@ public class MainComponents {
         this.changeFile(0, drawArea);
         } else {
             drawArea.setImg(null);
+            ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
+            drawArea.setPoints(emptyAr);
         }
     }
     
