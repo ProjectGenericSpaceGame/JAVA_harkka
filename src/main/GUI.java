@@ -5,20 +5,12 @@
  */
 package main;
 
-
-
-
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
 import javax.swing.JList;
-
 
 /**
  *
@@ -627,6 +619,10 @@ public class GUI extends javax.swing.JFrame {
         //this.drawArea.setLayout(new GridLayout(0, 1));
     }
     
+    private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {
+        
+    }
+    
     class MousePressedTracker extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e){
@@ -634,8 +630,6 @@ public class GUI extends javax.swing.JFrame {
             y2 = e.getY();
             Graphics g = drawArea.getGraphics();
             mainComponents.setCoord(x2, y2, g, drawArea);
-            //drawArea.add(point);
-            //drawArea.revalidate();
             repaint();
         }
     }
@@ -688,10 +682,7 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
          writeJSONconfirm.setVisible(true);
     }//GEN-LAST:event_writeJSONMainBtnActionPerformed
-
-    private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePointToolActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deletePointToolActionPerformed
+       
     private void giveProjectNameCancelActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         // TODO add your handling code here:
         giveProjectName.dispose();
