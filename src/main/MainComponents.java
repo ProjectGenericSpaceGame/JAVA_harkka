@@ -102,10 +102,13 @@ public class MainComponents {
         int x1;
         int x2 = x;
         int y2 = y;
-        JLabel point = new JLabel("Hello");
+       
+        JLabel point = new JLabel("asd");
         point.setBounds(x2, y2, 100, 20);
+        point.setName((this.getActualActiveFile().getPoints().size()-1)+"");
             //label.setBounds(x, y, width, height);
-        drawArea.add(point);
+        System.out.println(point.getName());
+        
         ArrayList<int[][]> pointsArray = projects.get(activeProject).getFile(activeFile).getPoints();
         if(!pointsArray.isEmpty()){
             int[][] coords = pointsArray.get(pointsArray.size()-1);
@@ -124,6 +127,8 @@ public class MainComponents {
         }
         drawArea.setPoints(projects.get(activeProject).getFile(activeFile).getPoints());
         System.out.println("x "+x2+" y "+y2);
+        //return point;
+        drawArea.add(point);
     }
     
    /* public void checkPoints(){

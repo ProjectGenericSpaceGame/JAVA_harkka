@@ -9,12 +9,14 @@ package main;
 
 
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
 
 
@@ -548,6 +550,7 @@ public class GUI extends javax.swing.JFrame {
             drawAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );*/
+        drawArea.setLayout(null);
         //tässä ongelma
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -621,6 +624,7 @@ public class GUI extends javax.swing.JFrame {
     // tämä metodi toteuttaa tapahtuman käsittelyn kun painetaan draw -painiketta.
     private void drawToolActionPerformed(java.awt.event.ActionEvent evt) {                                            
         this.drawArea.addMouseListener(new MousePressedTracker());
+        //this.drawArea.setLayout(new GridLayout(0, 1));
     }
     
     class MousePressedTracker extends MouseAdapter {
@@ -630,6 +634,9 @@ public class GUI extends javax.swing.JFrame {
             y2 = e.getY();
             Graphics g = drawArea.getGraphics();
             mainComponents.setCoord(x2, y2, g, drawArea);
+            //drawArea.add(point);
+            validate();
+            repaint();
         }
     }
                                                
