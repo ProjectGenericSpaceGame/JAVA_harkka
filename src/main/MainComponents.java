@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
@@ -101,6 +102,10 @@ public class MainComponents {
         int x1;
         int x2 = x;
         int y2 = y;
+        JLabel point = new JLabel("Hello");
+        point.setBounds(x2, y2, 100, 20);
+            //label.setBounds(x, y, width, height);
+        drawArea.add(point);
         ArrayList<int[][]> pointsArray = projects.get(activeProject).getFile(activeFile).getPoints();
         if(!pointsArray.isEmpty()){
             int[][] coords = pointsArray.get(pointsArray.size()-1);

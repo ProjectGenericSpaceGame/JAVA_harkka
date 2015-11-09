@@ -38,7 +38,7 @@ public class FileSelector extends GUI implements Accessible {
                 this.file = chooser.getSelectedFile();
                 this.image = ImageIO.read(file);
             }catch(IOException e){
-                // tässä ei  tapahdu mitään  
+                System.out.println("Error while reading the file"); 
             }
         } else if (returned == JFileChooser.CANCEL_OPTION){
             System.out.println("User didnt select a file");
