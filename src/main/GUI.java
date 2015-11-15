@@ -47,8 +47,8 @@ public class GUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        fileNameTxtField = new javax.swing.JTextField();
+        filePathTxtField = new javax.swing.JTextField();
         writeJSONBtn = new javax.swing.JButton();
         cancelWriteBtn = new javax.swing.JButton();
         JSONPathBtn = new javax.swing.JButton();
@@ -178,16 +178,16 @@ public class GUI extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Path:");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTextField1.setText("physics.json");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        fileNameTxtField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        fileNameTxtField.setText("physics.json");
+        fileNameTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                fileNameTxtFieldActionPerformed(evt);
             }
         });
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTextField2.setText("C://CollisionDrawer/default/");
+        filePathTxtField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        filePathTxtField.setText("C://CollisionDrawer/default/");
 
         writeJSONBtn.setText("Write");
         writeJSONBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -205,6 +205,11 @@ public class GUI extends javax.swing.JFrame {
         });
 
         JSONPathBtn.setText("Browse");
+        JSONPathBtn.addActionListener(new java.awt.event.ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JSONPathBtnPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout writeJSONconfirmLayout = new javax.swing.GroupLayout(writeJSONconfirm.getContentPane());
         writeJSONconfirm.getContentPane().setLayout(writeJSONconfirmLayout);
@@ -223,8 +228,8 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(writeJSONconfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-                            .addComponent(jTextField1)))
+                            .addComponent(filePathTxtField, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                            .addComponent(fileNameTxtField)))
                     .addGroup(writeJSONconfirmLayout.createSequentialGroup()
                         .addGap(7, 7, 7)
                         .addComponent(JSONPathBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -244,11 +249,11 @@ public class GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(writeJSONconfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fileNameTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(writeJSONconfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(filePathTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
                 .addGroup(writeJSONconfirmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cancelWriteBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -616,11 +621,14 @@ public class GUI extends javax.swing.JFrame {
     // tämä metodi toteuttaa tapahtuman käsittelyn kun painetaan draw -painiketta.
     private void drawToolActionPerformed(java.awt.event.ActionEvent evt) {                                            
         this.drawArea.addMouseListener(new MousePressedTracker());
+         deletePointTool.setSelected(false);
         //this.drawArea.setLayout(new GridLayout(0, 1));
     }
     
     private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {
-        
+        drawTool.setSelected(false);
+        MouseListener rem = drawArea.getMouseListeners()[0];
+        drawArea.removeMouseListener(rem);
     }
     
     class MousePressedTracker extends MouseAdapter {
@@ -666,13 +674,14 @@ public class GUI extends javax.swing.JFrame {
         }
     }                                        
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    private void fileNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
     }                                           
 
     private void writeJSONBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
         writeJSONconfirm.dispose();
+        mainComponents.startWrite(drawArea, filePathTxtField.getText(),fileNameTxtField.getText());
     }
     private void cancelWriteBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
@@ -681,8 +690,11 @@ public class GUI extends javax.swing.JFrame {
      private void writeJSONMainBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_writeJSONMainBtnActionPerformed
         // TODO add your handling code here:
          writeJSONconfirm.setVisible(true);
+         fileNameTxtField.setText(mainComponents.getProjectName());
     }//GEN-LAST:event_writeJSONMainBtnActionPerformed
-       
+    private void JSONPathBtnPerformed(java.awt.event.ActionEvent evt){
+        filePathTxtField.setText(mainComponents.newFile(null, null, null));
+    } 
     private void giveProjectNameCancelActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         // TODO add your handling code here:
         giveProjectName.dispose();
@@ -758,8 +770,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField fileNameTxtField;
+    private javax.swing.JTextField filePathTxtField;
     private javax.swing.JLabel mainTitle;
     private javax.swing.JButton newProject;
     private javax.swing.JButton openProject;

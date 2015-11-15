@@ -24,29 +24,46 @@ public class FileSelector extends GUI implements Accessible {
         private int returned;
 
     // konstruktori joka sisltää tiedostojen selailun
-    public FileSelector(){
-        // lisätään suodatin kuville
-        FileFilter filter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()); //bmp, jpg, jpeg, wbmp, pngm, gif
-        JFileChooser chooser = new JFileChooser();
-        // poistetaan suodatin FileChooserista
-        chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
-         // lisätään suodatin FileChooseriin
-        chooser.addChoosableFileFilter(filter);
-        returned = chooser.showOpenDialog(this);    
-        if (returned == JFileChooser.APPROVE_OPTION) {     
-            try{
-                this.file = chooser.getSelectedFile();
-                this.image = ImageIO.read(file);
-            }catch(IOException e){
-                System.out.println("Error while reading the file"); 
+    public FileSelector(int usage){
+        if(usage == 1){ //jos halutaan ladata kuva
+            // lisätään suodatin kuville
+            FileFilter filter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()); //bmp, jpg, jpeg, wbmp, pngm, gif
+            JFileChooser chooser = new JFileChooser();
+            // poistetaan suodatin FileChooserista
+            chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
+             // lisätään suodatin FileChooseriin
+            chooser.addChoosableFileFilter(filter);
+            returned = chooser.showOpenDialog(this);    
+            if (returned == JFileChooser.APPROVE_OPTION) {     
+                try{
+                    this.file = chooser.getSelectedFile();
+                    this.image = ImageIO.read(file);
+                }catch(IOException e){
+                    System.out.println("Error while reading the file"); 
+                }
+            } else if (returned == JFileChooser.CANCEL_OPTION){
+                System.out.println("User didnt select a file");
             }
-        } else if (returned == JFileChooser.CANCEL_OPTION){
-            System.out.println("User didnt select a file");
+        } else if(usage == 2){//jos halutaan tallennussijainti
+            JFileChooser chooser = new JFileChooser();
+            returned = chooser.showOpenDialog(this);    
+            if (returned == JFileChooser.APPROVE_OPTION) {     
+                try{
+                    this.file = chooser.getCurrentDirectory();
+                }catch(Exception e){
+                    System.out.println("Error while reading the path"); 
+                }
+            } else if (returned == JFileChooser.CANCEL_OPTION){
+                System.out.println("User didnt select a path");
+            }
         }
     }
     // Palauttaa  kuvan.
     public BufferedImage getImage(){
         return this.image;
-        }
+    }
+    public String getPath(){
+        return file.getAbsolutePath();
+    }
 } // class
 

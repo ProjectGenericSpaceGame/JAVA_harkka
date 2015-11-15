@@ -30,6 +30,9 @@ public class Project {
     public ShapeFile getFile(int index){
         return files.get(index);
     }
+    public ArrayList getAllFiles(){
+        return files;
+    }
     public int getFileAmount(){
         return files.size();
     }

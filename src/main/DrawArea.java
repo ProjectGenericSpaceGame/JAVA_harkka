@@ -30,7 +30,12 @@ public class DrawArea extends JPanel{
     public void setImg(BufferedImage img) {
         this.img = img;
     }
-
+    public int[] getImgData(){
+        int data[] = {0,0};
+        data[0]  = img.getWidth();
+        data[1] = img.getHeight();
+        return data;
+    }
     public void setPoints(ArrayList<int[][]> points) {
         this.points = points;
     }

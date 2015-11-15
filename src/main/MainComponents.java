@@ -29,20 +29,29 @@ public class MainComponents {
     public void newProject(Project pro){
         this.projects.add(pro);
     }
-    public void newFile(DrawArea drawArea, DefaultListModel availableFilesModel,JList availableFiles){
-        FileSelector tiedosto = new FileSelector();
-        drawArea.setImg(tiedosto.getImage());
-        ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
-        drawArea.setPoints(emptyAr);
-        ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1);
-        availableFilesModel.addElement(file.getShapeName());
-        projects.get(activeProject).addFile(file);
-        availableFiles.setSelectedIndex(this.getFilesAmount()-1);
-        activeFile = this.getFilesAmount()-1;
+    public String newFile(DrawArea drawArea, DefaultListModel availableFilesModel,JList availableFiles){
+        if(drawArea != null){
+            FileSelector tiedosto = new FileSelector(1);
+            drawArea.setImg(tiedosto.getImage());
+            ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
+            drawArea.setPoints(emptyAr);
+            ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1);
+            availableFilesModel.addElement(file.getShapeName());
+            projects.get(activeProject).addFile(file);
+            availableFiles.setSelectedIndex(this.getFilesAmount()-1);
+            activeFile = this.getFilesAmount()-1;
+            return "";
+        } else {
+            FileSelector tiedosto = new FileSelector(2);
+            return tiedosto.getPath();
+        }
     }
     
     public int getProjectAmount(){
         return this.projects.size();
+    }
+    public String getProjectName(){
+        return projects.get(activeProject).getName();
     }
     public int getFilesAmount(){
         return this.projects.get(activeProject).getFileAmount();
@@ -132,7 +141,13 @@ public class MainComponents {
         //return point;
         drawArea.add(point);
     }
-    
+    public void startWrite(DrawArea drawArea,String path, String fileName){
+        ShapeSplitter shapeSplitter = new ShapeSplitter(drawArea.getImgData()[0],drawArea.getImgData()[1],projects.get(activeProject).getAllFiles(),fileName,path);
+        if(projects.get(activeProject).getFile(activeFile).isSlice()){
+            shapeSplitter.splitToSmaller();
+        } else 
+            shapeSplitter.jumpToWrite();
+    }
    /* public void checkPoints(){
         ArrayList pointten =  this.projects.get(activeProject).getFile(activeFile).getPoints();
         if (pointten.isEmpty()){

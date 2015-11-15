@@ -16,6 +16,8 @@ import java.util.ArrayList;
 public class ShapeFile {
     private BufferedImage img; //where to find picture used as drawing template
     private ArrayList<int[][]> points; //Array holding user defined points
+    private ArrayList<int[][]> pointsToSliceFrom;
+    private ArrayList<int[]> smallerShapes;
     private boolean slice; //Should intelligent shapetracker be used for splicing the body to smaller parts
     private String shapeName; //Actual name of this body, this will be written to JSON and will work as a reference name when using JSON file
     private ArrayList<Graphics> graphics;
@@ -32,7 +34,9 @@ public class ShapeFile {
         
         this.slice = true; //default value is true
         this.points = new ArrayList<int[][]>();//obviously empty when creating file //[[],[]]
+        //this.pointsToSliceFrom = new ArrayList<int[][]>();//obviously empty when creating file //[[],[]]
         this.graphics = new ArrayList<Graphics>();
+        this.smallerShapes = new ArrayList<int[]>();
     }
 
     public BufferedImage getImgSrc() {
@@ -47,7 +51,15 @@ public class ShapeFile {
     public ArrayList getPoints() {
         return points;
     }
-
+    public ArrayList getSlicePoints() {
+        if(pointsToSliceFrom == null){
+        pointsToSliceFrom = new <int[][]>ArrayList(points);
+        }
+        return pointsToSliceFrom;
+    }
+    public void slicePoints(ArrayList newPoints){
+        this.pointsToSliceFrom = newPoints;
+    }
     public void setPoints(int[][] points) { //int points is two-dimensional array holding x & y coordinates of clicked points. For example int points =[23][15]
         this.points.add(points);
     }
@@ -91,6 +103,12 @@ public class ShapeFile {
            }
        }
        return -1;
+    }
+    public void setNewSmallerShape(int[] newShape){
+        this.smallerShapes.add(newShape);
+    }
+    public ArrayList getSmallerShapes(){
+        return this.smallerShapes;
     }
     
     
