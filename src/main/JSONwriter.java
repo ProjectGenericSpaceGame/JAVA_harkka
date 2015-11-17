@@ -18,6 +18,7 @@ public class JSONwriter {
     private PrintWriter write = null;
     private final String preShape1 = "\"density\": 2, \"friction\": 0, \"bounce\": 0,";
     private final String preShape2 = "\"filter\": { \"categoryBits\": 1, \"maskBits\": 65535 },";
+    
     public boolean write(ArrayList<ShapeFile> shapes,String fileName, String filePaths){
         try {
             write = new PrintWriter(filePaths+""+fileName+".json");

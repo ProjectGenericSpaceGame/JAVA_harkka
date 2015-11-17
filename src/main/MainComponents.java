@@ -5,9 +5,11 @@
  */
 package main;
 
+import java.awt.Image;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
@@ -19,6 +21,7 @@ public class MainComponents {
     private ArrayList<Project> projects;
     private int activeFile;
     private int activeProject;
+    private Image img;
     
     public MainComponents(){
         this.projects = new ArrayList<Project>();
@@ -114,8 +117,14 @@ public class MainComponents {
         int x2 = x;
         int y2 = y;
        
-        JLabel point = new JLabel("asd");
-        point.setBounds(x2, y2, 100, 20);
+        //ImageIcon icon = new ImageIcon(getClass().getResource("\\DottSmall.jpg"));
+        ImageIcon icon = new ImageIcon("DottSmall.jpg");
+        JLabel point = new JLabel();
+                //icon.paintIcon(this, g, 10, 200);
+        point.setIcon(icon);
+        //point.setIcon(new ImageIcon("dotSmall.PNG"));
+        
+        point.setBounds(x2-5, y2-5, 25, 25);
         point.setName((this.getActualActiveFile().getPoints().size()-1)+"");
             //label.setBounds(x, y, width, height);
         System.out.println(point.getName());
