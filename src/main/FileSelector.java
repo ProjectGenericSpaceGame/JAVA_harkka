@@ -77,4 +77,3 @@ public class FileSelector extends GUI implements Accessible {
         return this.path+"/";
     }
 } // class
-

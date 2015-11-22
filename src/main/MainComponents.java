@@ -35,15 +35,20 @@ public class MainComponents {
     public String newFile(DrawArea drawArea, DefaultListModel availableFilesModel,JList availableFiles){
         if(drawArea != null){
             FileSelector tiedosto = new FileSelector(1);
-            drawArea.setImg(tiedosto.getImage());
-            ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
-            drawArea.setPoints(emptyAr);
-            ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1);
-            availableFilesModel.addElement(file.getShapeName());
-            projects.get(activeProject).addFile(file);
-            availableFiles.setSelectedIndex(this.getFilesAmount()-1);
-            activeFile = this.getFilesAmount()-1;
-            return "";
+            if(tiedosto.getImage() != null){
+                drawArea.setImg(tiedosto.getImage());
+                ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
+                drawArea.setPoints(emptyAr);
+                ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1);
+                availableFilesModel.addElement(file.getShapeName());
+                projects.get(activeProject).addFile(file);
+                availableFiles.setSelectedIndex(this.getFilesAmount()-1);
+                activeFile = this.getFilesAmount()-1;
+                return "";
+            }
+            else {
+                return "";
+            }
         } else {
             FileSelector tiedosto = new FileSelector(2);
             return tiedosto.getPath();
@@ -111,7 +116,7 @@ public class MainComponents {
         }
     }
     
-     public void setCoord(int x, int y, Graphics g,DrawArea drawArea){
+    public void setCoord(int x, int y, Graphics g,DrawArea drawArea){
         int y1;
         int x1;
         int x2 = x;

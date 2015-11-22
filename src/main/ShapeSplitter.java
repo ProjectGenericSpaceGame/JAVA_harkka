@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class ShapeSplitter extends JSONwriter{
     private ArrayList<int[][]> points;
     private ArrayList<ShapeFile> files;
+    private ArrayList<int[][]> removeThese = new <int[][]>ArrayList();
     private int imageWidth;
     private int imageHeight;
     private final String projectName; 
@@ -53,35 +54,43 @@ public class ShapeSplitter extends JSONwriter{
                 }
                 
                 if(point1[0][0] > imageWidth/2){
-                    if(point2[0][0] > point1[0][0]+20 && point3[0][0] < point2[0][0]-20){
-                        int[] newShape = {point1[0][0],point1[0][1] , point2[0][0],point2[0][1] , point3[0][0],point1[0][1]};
+                    if(point2[0][0] > point1[0][0]+5 && point3[0][0] < point2[0][0]-5){
+                        int[] newShape = {point1[0][0],point1[0][1] , point2[0][0],point2[0][1] , point3[0][0],point3[0][1]};
                         sf.setNewSmallerShape(newShape);
-                        points.remove(removeIndex);
-                        i+=1;//add one as it also gets +1 after this cycle
+                        removeThese.add(points.get(removeIndex));
+                        //i+=1;//add one as it also gets +1 after this cycle
                     } 
                 } else if(point1[0][1] > imageHeight/2){
-                    if(point2[0][1] > point1[0][1]+20 && point3[0][1] < point2[0][1]-20){
-                        int[] newShape = {point1[0][0],point1[0][1] , point2[0][0],point2[0][1] , point3[0][0],point1[0][1]};
+                    if(point2[0][1] > point1[0][1]+5 && point3[0][1] < point2[0][1]-5){
+                        int[] newShape = {point1[0][0],point1[0][1] , point2[0][0],point2[0][1] , point3[0][0],point3[0][1]};
                         sf.setNewSmallerShape(newShape);
-                        points.remove(removeIndex);
-                        i+=1;
+                        removeThese.add(points.get(removeIndex));
+
+                        //i+=1;
                     }
                 } else if(point1[0][0] < imageWidth/2){
-                    if(point2[0][0] < point1[0][0]-20 && point3[0][0] > point2[0][0]+20){
-                        int[] newShape = {point1[0][0],point1[0][1] , point2[0][0],point2[0][1] , point3[0][0],point1[0][1]};
+                    if(point2[0][0] < point1[0][0]-5 && point3[0][0] > point2[0][0]+5){
+                        int[] newShape = {point1[0][0],point1[0][1] , point2[0][0],point2[0][1] , point3[0][0],point3[0][1]};
                         sf.setNewSmallerShape(newShape);
-                        points.remove(removeIndex);
-                        i+=1;//add one as it also gets +1 after this cycle
+                        removeThese.add(points.get(removeIndex));
+                        //i+=1;//add one as it also gets +1 after this cycle
                     } 
                 } else if(point1[0][1] < imageHeight/2){
-                     if(point2[0][1] < point1[0][1]-20 && point3[0][1] > point2[0][1]+20){
-                        int[] newShape = {point1[0][0],point1[0][1] , point2[0][0],point2[0][1] , point3[0][0],point1[0][1]};
+                     if(point2[0][1] < point1[0][1]-5 && point3[0][1] > point2[0][1]+5){
+                        int[] newShape = {point1[0][0],point1[0][1] , point2[0][0],point2[0][1] , point3[0][0],point3[0][1]};
                         sf.setNewSmallerShape(newShape);
-                        points.remove(removeIndex);
-                        i+=1;
+                        removeThese.add(points.get(removeIndex));
+
+                        //i+=1;
                     }
                 }
+                else {
+                }
             }
+            for (int[][] block : removeThese) {
+                points.remove(block);
+            }
+            removeThese.clear();
             sf.slicePoints(points);
         }
         super.write(files, projectName, filePath);
