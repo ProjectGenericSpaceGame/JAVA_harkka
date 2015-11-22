@@ -23,6 +23,7 @@ public class FileSelector extends GUI implements Accessible {
         private File file;
         private BufferedImage image = null;
         private int returned;
+        private String path;
 
     // konstruktori joka sisltää tiedostojen selailun
     public FileSelector(int usage){
@@ -51,10 +52,13 @@ public class FileSelector extends GUI implements Accessible {
             }
         } else if(usage == 2){//jos halutaan tallennussijainti
             JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+            
             returned = chooser.showOpenDialog(this);    
             if (returned == JFileChooser.APPROVE_OPTION) {     
                 try{
-                    this.file = chooser.getCurrentDirectory();
+                    this.path = chooser.getSelectedFile().getAbsolutePath();
                 }catch(Exception e){
                     System.out.println("Error while reading the path"); 
                 }
@@ -69,7 +73,8 @@ public class FileSelector extends GUI implements Accessible {
     }
     // Palauttaa absoluuttisen polun tiedostoon
     public String getPath(){
-        return file.getAbsolutePath();
+        // haluttuun kansioon saadaan tallennettua tiedosto lisäämällä kenoviiva
+        return this.path+"/";
     }
 } // class
 

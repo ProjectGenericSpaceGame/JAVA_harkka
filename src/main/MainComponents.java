@@ -118,13 +118,13 @@ public class MainComponents {
         int y2 = y;
        
         //ImageIcon icon = new ImageIcon(getClass().getResource("\\DottSmall.jpg"));
-        ImageIcon icon = new ImageIcon("DottSmall.jpg");
+        //ImageIcon icon = new ImageIcon("DottSmall.png");
         JLabel point = new JLabel();
                 //icon.paintIcon(this, g, 10, 200);
-        point.setIcon(icon);
+       // point.setIcon(icon);
         //point.setIcon(new ImageIcon("dotSmall.PNG"));
         
-        point.setBounds(x2-5, y2-5, 25, 25);
+        point.setBounds(x2 -5, y2 -5, 15, 15);
         point.setName((this.getActualActiveFile().getPoints().size()-1)+"");
             //label.setBounds(x, y, width, height);
         System.out.println(point.getName());
