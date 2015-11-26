@@ -50,8 +50,8 @@ public class MainComponents {
                 return "";
             }
         } else {
-            FileSelector tiedosto = new FileSelector(2);
-            return tiedosto.getPath();
+            return "";
+         // ime paskaa
         }
     }
     

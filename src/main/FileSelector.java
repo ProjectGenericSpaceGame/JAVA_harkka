@@ -27,15 +27,16 @@ public class FileSelector extends GUI implements Accessible {
 
     // konstruktori joka sisltää tiedostojen selailun
     public FileSelector(int usage){
-        if(usage == 1){ //jos halutaan ladata kuva
+         // luodaan uusi JFileChooser
+        JFileChooser chooser = new JFileChooser();
+         // muutetaan chooserin oletuskokoa
+        chooser.setPreferredSize(new Dimension(600,600));
+        // poistetaan suodatin FileChooserista
+        chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
+        //jos halutaan ladata kuva
+        if(usage == 1){ 
             // lisätään suodatin kuville
             FileFilter filter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()); //bmp, jpg, jpeg, wbmp, pngm, gif
-            // luodaan uusi JFileChooser
-            JFileChooser chooser = new JFileChooser();
-            // muutetaan chooserin oletuskokoa
-            chooser.setPreferredSize(new Dimension(600,600));
-            // poistetaan suodatin FileChooserista
-            chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
              // lisätään suodatin FileChooseriin
             chooser.addChoosableFileFilter(filter);
             returned = chooser.showOpenDialog(this); 
@@ -50,11 +51,10 @@ public class FileSelector extends GUI implements Accessible {
             } else if (returned == JFileChooser.CANCEL_OPTION){
                 System.out.println("User didnt select a file");
             }
-        } else if(usage == 2){//jos halutaan tallennussijainti
-            JFileChooser chooser = new JFileChooser();
+        //jos halutaan tallennussijainti    
+        } else if(usage == 2){
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.setAcceptAllFileFilterUsed(false);
-            
+            //chooser.setAcceptAllFileFilterUsed(false);
             returned = chooser.showOpenDialog(this);    
             if (returned == JFileChooser.APPROVE_OPTION) {     
                 try{

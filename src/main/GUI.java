@@ -17,7 +17,8 @@ import javax.swing.JList;
  * @author RAndom MC
  */
 public class GUI extends javax.swing.JFrame {
-    private int x1, y1, x2, y2;
+    private int x2, y2;
+    private Settings settingss = null;
 
 
     /**
@@ -38,6 +39,7 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         upload = new javax.swing.JDialog();
+        settings = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
         givenRefName = new javax.swing.JTextField();
         refDialCancel = new javax.swing.JButton();
@@ -70,6 +72,17 @@ public class GUI extends javax.swing.JFrame {
                 availableFilesEvent(e);
             }
         };
+        
+        settingSaveButton = new javax.swing.JButton();
+        settingsCancelButton = new javax.swing.JButton();
+        defaultFilePath = new javax.swing.JTextField();
+        defaultFilename = new javax.swing.JTextField();
+        defaultFilepathLabel = new javax.swing.JLabel();
+        defaultFilenameLabel = new javax.swing.JLabel();
+        settingsSeparator = new javax.swing.JSeparator();
+        settingsDefaultBrowse = new javax.swing.JButton();
+        settingsHeadingLabel = new javax.swing.JLabel();
+        
         availableFiles = new JList(availableFilesModel);
         availableFiles.addMouseListener(availableFilesListener);
         projectsPanel = new javax.swing.JScrollPane();
@@ -122,7 +135,92 @@ public class GUI extends javax.swing.JFrame {
                 refDialOKActionPerformed(evt);
             }
         });
+        
+        settings.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        settings.setMinimumSize(new java.awt.Dimension(400, 330));
+        settings.setLocation(new java.awt.Point(750, 200));
+        //settings.setAlwaysOnTop(true);
+        settingSaveButton.setText("Save Settings");
+        settingSaveButton.setToolTipText("");
+        settingSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingSaveButtonActionPerformed(evt);
+            }
+        });
 
+        settingsCancelButton.setText("Cancel");
+        settingsCancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingsCancelButtonActionPerformed(evt);
+            }
+        });
+
+        defaultFilepathLabel.setText("Default path to save files:");
+
+        defaultFilenameLabel.setText("Default filename");
+
+        settingsDefaultBrowse.setText("Browse");
+        settingsDefaultBrowse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingsDefaultBrowseActionPerformed(evt);
+            }
+        });
+
+        settingsHeadingLabel.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
+        settingsHeadingLabel.setText("Settings");
+        
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(settings.getContentPane());
+        settings.getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(settingsSeparator, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(defaultFilenameLabel)
+                            .addComponent(defaultFilepathLabel)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(37, 37, 37)
+                                        .addComponent(settingSaveButton)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(settingsCancelButton))
+                                    .addComponent(defaultFilename)
+                                    .addComponent(defaultFilePath))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(settingsDefaultBrowse))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(163, 163, 163)
+                        .addComponent(settingsHeadingLabel)))
+                .addContainerGap(34, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(settingsHeadingLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(settingsSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(defaultFilepathLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(defaultFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(settingsDefaultBrowse))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(defaultFilenameLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(defaultFilename, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(settingSaveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(settingsCancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22))
+        );
+   
         javax.swing.GroupLayout uploadLayout = new javax.swing.GroupLayout(upload.getContentPane());
         upload.getContentPane().setLayout(uploadLayout);
         uploadLayout.setHorizontalGroup(
@@ -406,37 +504,19 @@ public class GUI extends javax.swing.JFrame {
         mainTitle.setText("CollisionDrawer");
         mainTitle.setOpaque(true);
 
-        settigns.setBackground(new java.awt.Color(255, 255, 255));
-        settigns.setIcon(new javax.swing.ImageIcon("C:\\Users\\RAndom MC\\Documents\\AlbumArtSmall.jpg")); // NOI18N
-        settigns.setToolTipText("");
-        settigns.setBorder(null);
-        settigns.setBorderPainted(false);
-        settigns.setContentAreaFilled(false);
-
-        /*javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(upperNavi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(55, 55, 55)
-                .addComponent(mainTitle)
-                .addGap(50, 50, 50)
-                .addComponent(settigns, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(mainTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(upperNavi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(settigns)
-                .addContainerGap(714, Short.MAX_VALUE))
-        );*/
+        settigns.setBackground(new java.awt.Color(235, 235, 235));
+        //settigns.setIcon(new javax.swing.ImageIcon("C:\\Users\\RAndom MC\\Documents\\AlbumArtSmall.jpg")); // NOI18N
+        settigns.setToolTipText("Settings");
+        //settigns.setBorder(null);
+        settigns.setBorderPainted(true);
+        settigns.setContentAreaFilled(true);
+        
+        settigns.setText("Settings");
+        settigns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settignseActionPerformed(evt);
+            }
+        });
         
         leftNavi.setBackground(new java.awt.Color(250, 250, 250));
         leftNavi.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -549,18 +629,18 @@ public class GUI extends javax.swing.JFrame {
         );*/
         drawArea.setLayout(null);
         //tässä ongelma
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()  
+        javax.swing.GroupLayout mainLayout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(mainLayout);
+        mainLayout.setHorizontalGroup(
+            mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainLayout.createSequentialGroup()  
                 .addContainerGap()
                 .addComponent(leftNavi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(drawArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
                 //
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(mainLayout.createSequentialGroup()
                 .addComponent(upperNavi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(55, 55, 55)
                 .addComponent(mainTitle)
@@ -568,20 +648,20 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(settigns, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        mainLayout.setVerticalGroup(
+            mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainLayout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(drawArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(leftNavi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+            .addGroup(mainLayout.createSequentialGroup()
+                .addGroup(mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(mainTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(upperNavi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(mainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(settigns)
                 .addContainerGap(714, Short.MAX_VALUE))
@@ -625,6 +705,11 @@ public class GUI extends javax.swing.JFrame {
         //this.drawArea.setLayout(new GridLayout(0, 1));
     }
     
+    private void settignseActionPerformed(java.awt.event.ActionEvent evt){
+        settings.setVisible(true);
+        this.settingss = new Settings();
+    }
+    
     private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {
         drawTool.setSelected(false);
         MouseListener rem = drawArea.getMouseListeners()[0];
@@ -641,6 +726,26 @@ public class GUI extends javax.swing.JFrame {
             repaint();
         }
     }
+    
+    private void settingSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                  
+        String name = defaultFilename.getText();
+        settingss.setDefaultFileName(name);
+        this.settingss.saveSettings();
+        settings.dispose();
+    }                                                 
+
+                                                
+    private void settingsDefaultBrowseActionPerformed(java.awt.event.ActionEvent evt) {                                                      
+        FileSelector tiedosto = new FileSelector(2);
+        String path = tiedosto.getPath();
+        settingss.setDefaultPath(path);
+        defaultFilePath.setText(path);
+    } 
+    
+    private void settingsCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                     
+        settings.dispose();
+    }  
+        
                                                
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
@@ -652,7 +757,7 @@ public class GUI extends javax.swing.JFrame {
     } 
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {                                     
-        // TODO add your handling code here:
+        
     }                                    
 
     private void refDialCancelActionPerformed(java.awt.event.ActionEvent evt) {                                              
@@ -666,7 +771,7 @@ public class GUI extends javax.swing.JFrame {
         updateRenamer();
         upload.dispose();
     }                                         
-
+    
     private void picScrFieldMouseClicked(java.awt.event.MouseEvent evt) {                                         
         // TODO add your handling code here:
         if(availableProjectsModel.getSize() != 0){ 
@@ -689,11 +794,17 @@ public class GUI extends javax.swing.JFrame {
     }    
      private void writeJSONMainBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_writeJSONMainBtnActionPerformed
         // TODO add your handling code here:
-         writeJSONconfirm.setVisible(true);
-         fileNameTxtField.setText(mainComponents.getProjectName());
+        writeJSONconfirm.setVisible(true);
+        Settings setting = new Settings();
+        String path = setting.getDefaultPath();
+        String name = setting.getDefaulthFileName();
+        filePathTxtField.setText(path);
+        fileNameTxtField.setText(name);
+        // fileNameTxtField.setText(mainComponents.getProjectName());
     }//GEN-LAST:event_writeJSONMainBtnActionPerformed
     private void JSONPathBtnPerformed(java.awt.event.ActionEvent evt){
-        filePathTxtField.setText(mainComponents.newFile(null, null, null));
+        FileSelector file = new FileSelector(2);
+        filePathTxtField.setText(file.getPath());   
     } 
     private void giveProjectNameCancelActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         // TODO add your handling code here:
@@ -807,6 +918,16 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton giveProjectNameCancel;
     private javax.swing.JButton giveProjectNameOK;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JTextField defaultFilePath;
+    private javax.swing.JTextField defaultFilename;
+    private javax.swing.JLabel defaultFilenameLabel;
+    private javax.swing.JLabel defaultFilepathLabel;
+    private javax.swing.JButton settingSaveButton;
+    private javax.swing.JButton settingsCancelButton;
+    private javax.swing.JButton settingsDefaultBrowse;
+    private javax.swing.JLabel settingsHeadingLabel;
+    private javax.swing.JSeparator settingsSeparator;
+    private javax.swing.JDialog settings;
     //variables that main can ask from GUI
     private MainComponents mainComponents;
     // End of variables declaration                   
