@@ -6,9 +6,14 @@
 package main;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
@@ -17,7 +22,7 @@ import javax.swing.JList;
  * @author RAndom MC
  */
 public class GUI extends javax.swing.JFrame {
-    private int x2, y2;
+    private int x1, y1, x2, y2;
     private Settings settingss = null;
 
 
@@ -63,6 +68,30 @@ public class GUI extends javax.swing.JFrame {
         uploadBtn = new javax.swing.JButton();
         mainTitle = new javax.swing.JLabel();
         settigns = new javax.swing.JButton();
+        renameProjectBtn = new javax.swing.JButton();
+        renameProjectBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftNaviBrowersActionPerformed(evt);
+            }
+        });
+        deleteProjectBtn = new javax.swing.JButton();
+        deleteProjectBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftNaviBrowersActionPerformed(evt);
+            }
+        });
+        renameFileBtn = new javax.swing.JButton();
+        renameFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftNaviBrowersActionPerformed(evt);
+            }
+        });
+        removeFileBtn = new javax.swing.JButton();
+        removeFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftNaviBrowersActionPerformed(evt);
+            }
+        });
         leftNavi = new javax.swing.JPanel();
         filesPanel = new javax.swing.JScrollPane();
         availableFilesModel = new DefaultListModel();
@@ -503,8 +532,20 @@ public class GUI extends javax.swing.JFrame {
         mainTitle.setFont(new java.awt.Font("Xpress SF", 0, 48)); // NOI18N
         mainTitle.setText("CollisionDrawer");
         mainTitle.setOpaque(true);
-
+        
         settigns.setBackground(new java.awt.Color(235, 235, 235));
+        //settigns.setIcon(new javax.swing.ImageIcon("C:\\Users\\RAndom MC\\Documents\\AlbumArtSmall.jpg")); // NOI18N
+        settigns.setToolTipText("Settings");
+        //settigns.setBorder(null);
+        settigns.setBorderPainted(true);
+        settigns.setContentAreaFilled(true);
+        
+        settigns.setText("Settings");
+        settigns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settignseActionPerformed(evt);
+            }
+        }); settigns.setBackground(new java.awt.Color(235, 235, 235));
         //settigns.setIcon(new javax.swing.ImageIcon("C:\\Users\\RAndom MC\\Documents\\AlbumArtSmall.jpg")); // NOI18N
         settigns.setToolTipText("Settings");
         //settigns.setBorder(null);
@@ -518,9 +559,84 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         
+        renameProjectBtn.setBackground(new java.awt.Color(255, 255, 255));
+        renameProjectBtn.setToolTipText("rename");
+        renameProjectBtn.setActionCommand("renameProject");
+        //renameProjectBtn.setBorder(null);
+        //renameProjectBtn.setBorderPainted(false);
+        renameProjectBtn.setContentAreaFilled(false);
+        renameProjectBtn.setPreferredSize(new java.awt.Dimension(20, 20));
+        BufferedImage img;
+        try {
+            img = ImageIO.read(new File("rename.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            img = null;
+        }
+        if(img != null){
+            Image dimg = img.getScaledInstance(20, 20,BufferedImage.SCALE_SMOOTH);
+            renameProjectBtn.setIcon(new javax.swing.ImageIcon(dimg)); // NOI18N
+        }
+        deleteProjectBtn.setBackground(new java.awt.Color(255, 255, 255));
+        deleteProjectBtn.setActionCommand("deleteProject");
+        deleteProjectBtn.setToolTipText("rename");
+        //renameProjectBtn.setBorder(null);
+        //renameProjectBtn.setBorderPainted(false);
+        deleteProjectBtn.setContentAreaFilled(false);
+        deleteProjectBtn.setPreferredSize(new java.awt.Dimension(20, 20));
+        BufferedImage img2;
+        try {
+            img2 = ImageIO.read(new File("close.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            img2 = null;
+        }
+        if(img2 != null){
+            Image dimg2 = img2.getScaledInstance(20, 20,BufferedImage.SCALE_SMOOTH);
+            deleteProjectBtn.setIcon(new javax.swing.ImageIcon(dimg2)); // NOI18N
+        }
+        //repeat for files
+        renameFileBtn.setBackground(new java.awt.Color(255, 255, 255));
+        renameFileBtn.setActionCommand("renameFile");
+        renameFileBtn.setToolTipText("rename");
+        //renameFileBtn.setBorder(null);
+        //renameFileBtn.setBorderPainted(false);
+        renameFileBtn.setContentAreaFilled(false);
+        renameFileBtn.setPreferredSize(new java.awt.Dimension(20, 20));
+        BufferedImage imgForFiles;
+        try {
+            imgForFiles = ImageIO.read(new File("rename.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            imgForFiles = null;
+        }
+        if(imgForFiles != null){
+            Image dimg = imgForFiles.getScaledInstance(20, 20,BufferedImage.SCALE_SMOOTH);
+            renameFileBtn.setIcon(new javax.swing.ImageIcon(dimg)); // NOI18N
+        }
+        removeFileBtn.setBackground(new java.awt.Color(255, 255, 255));
+        removeFileBtn.setActionCommand("deleteFile");
+        removeFileBtn.setToolTipText("rename");
+        //renameFileBtn.setBorder(null);
+        //renameFileBtn.setBorderPainted(false);
+        removeFileBtn.setContentAreaFilled(false);
+        removeFileBtn.setPreferredSize(new java.awt.Dimension(20, 20));
+        BufferedImage img2ForFiles;
+        try {
+            img2ForFiles = ImageIO.read(new File("close.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            img2ForFiles = null;
+        }
+        if(img2ForFiles != null){
+            Image dimg2 = img2ForFiles.getScaledInstance(20, 20,BufferedImage.SCALE_SMOOTH);
+            removeFileBtn.setIcon(new javax.swing.ImageIcon(dimg2)); // NOI18N
+        }
+        
         leftNavi.setBackground(new java.awt.Color(250, 250, 250));
+        leftNavi.setPreferredSize(new java.awt.Dimension(250,250));
         leftNavi.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        leftNavi.setToolTipText("");
+        //leftNavi.setToolTipText("");
 
         availableFiles.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         /*availableFiles.setModel(new javax.swing.AbstractListModel() {
@@ -575,7 +691,7 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(leftNaviLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(leftNaviLayout.createSequentialGroup()
-                        .addComponent(writeJSONMainBtn)
+ 
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(leftNaviLayout.createSequentialGroup()
                         .addGroup(leftNaviLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,14 +699,28 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(projectsPanel)
                             .addGroup(leftNaviLayout.createSequentialGroup()
                                 .addGroup(leftNaviLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(leftNaviLayout.createSequentialGroup()
                                     .addComponent(filesLabel)
+                                    .addGap(110, 110, 110)
+                                    .addComponent(removeFileBtn)
+                                    //.addGap(10, 10, 10)
+                                    .addComponent(renameFileBtn)
+                                    .addGap(0, 0, Short.MAX_VALUE)) 
                                     .addGroup(leftNaviLayout.createSequentialGroup()
                                         .addComponent(drawTool, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(deletePointTool)))
+                                       .addComponent(deletePointTool)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(writeJSONMainBtn)  
+                                    ))
                                 .addGap(0, 62, Short.MAX_VALUE))
                             .addGroup(leftNaviLayout.createSequentialGroup()
                                 .addComponent(projectsLabel)
+                                .addGap(90, 90, 90)
+                                .addComponent(deleteProjectBtn)
+                                //.addGap(10, 10, 10)
+                                .addComponent(renameProjectBtn) 
+                                //.addGap(0, 0, 0)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
@@ -600,16 +730,24 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(leftNaviLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(drawTool)
-                .addComponent(deletePointTool))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(deletePointTool)
                 .addComponent(writeJSONMainBtn)
-                .addGap(18, 18, 18)
+                )
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(28, 28, 28)   
+                .addGroup(leftNaviLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                
                 .addComponent(projectsLabel)
-                .addGap(18, 18, 18)
+                .addComponent(renameProjectBtn)
+                .addComponent(deleteProjectBtn))
+                //.addGap(10, 10, 10)
                 .addComponent(projectsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addGroup(leftNaviLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(filesLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(renameFileBtn)
+                .addComponent(removeFileBtn))
+                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(filesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -799,7 +937,8 @@ public class GUI extends javax.swing.JFrame {
         String path = setting.getDefaultPath();
         String name = setting.getDefaulthFileName();
         filePathTxtField.setText(path);
-        fileNameTxtField.setText(name);
+        //fileNameTxtField.setText(name);
+        fileNameTxtField.setText(mainComponents.getProjectName());
         // fileNameTxtField.setText(mainComponents.getProjectName());
     }//GEN-LAST:event_writeJSONMainBtnActionPerformed
     private void JSONPathBtnPerformed(java.awt.event.ActionEvent evt){
@@ -824,6 +963,20 @@ public class GUI extends javax.swing.JFrame {
         mainComponents.setActiveFile(-1);
         updateRenamer();
         repaint();
+    }
+    private void leftNaviBrowersActionPerformed(java.awt.event.ActionEvent evt){
+        String source = evt.getActionCommand();
+        if(source == "renameProject"){
+            
+        } else if(source == "deleteProject"){
+            
+        } else if(source == "renameFile"){
+            picScrFieldMouseClicked(null);
+        } else if(source == "deleteFile"){
+            mainComponents.removeFile(this.drawArea,availableFilesModel,availableFiles);
+            updateRenamer();
+            repaint();
+        }
     }
     private void updateRenamer(){
         if(availableFilesModel.getSize() != 0){
@@ -891,6 +1044,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton refDialOK;
     private javax.swing.JButton save;
     private javax.swing.JButton settigns;
+    private javax.swing.JButton renameProjectBtn;
+    private javax.swing.JButton deleteProjectBtn;
+    private javax.swing.JButton renameFileBtn;
+    private javax.swing.JButton removeFileBtn;
     private javax.swing.JDialog upload;
     private javax.swing.JButton uploadBtn;
     private javax.swing.JPanel upperNavi;

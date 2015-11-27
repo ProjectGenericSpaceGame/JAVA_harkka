@@ -39,7 +39,9 @@ public class MainComponents {
                 drawArea.setImg(tiedosto.getImage());
                 ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
                 drawArea.setPoints(emptyAr);
-                ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1);
+                Settings setting = new Settings();
+                ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1,setting.getDefaulthFileName());
+                setting = null;
                 availableFilesModel.addElement(file.getShapeName());
                 projects.get(activeProject).addFile(file);
                 availableFiles.setSelectedIndex(this.getFilesAmount()-1);
@@ -154,6 +156,15 @@ public class MainComponents {
         System.out.println("x "+x2+" y "+y2);
         //return point;
         drawArea.add(point);
+    }
+    public void removeFile(DrawArea drawArea,DefaultListModel listModel,JList filesList){
+        //Here we first remove file object, then set list and finally make program to change file. changeFile must be last call because it also changes activeFile
+        projects.get(activeProject).getAllFiles().remove(activeFile);
+        listModel.remove(activeFile);
+        filesList.setSelectedIndex(activeFile-1);
+        this.changeFile(activeFile-1, drawArea);
+        
+        
     }
     public void startWrite(DrawArea drawArea,String path, String fileName){
         ShapeSplitter shapeSplitter = new ShapeSplitter(drawArea.getImgData()[0],drawArea.getImgData()[1],projects.get(activeProject).getAllFiles(),fileName,path);

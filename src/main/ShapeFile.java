@@ -24,13 +24,13 @@ public class ShapeFile {
     
     //private ShapeFile self = this; //this is used if function scope prevents using "this" keyword
     
-    public ShapeFile(BufferedImage imgSrc,int fileAmount) {
+    public ShapeFile(BufferedImage imgSrc,int fileAmount,String defaultName) {
         if(imgSrc != null){
         this.img = imgSrc;
         }else{
         this.img = null;
         }//New file is created by uploading an image, therefore there will always be this value when creating new file
-        this.shapeName = "file"+fileAmount; //this is also required field and when creating file, a default name is used. Default name is generated based on how many files exists in project
+        this.shapeName = ""+defaultName+fileAmount; //this is also required field and when creating file, a default name is used. Default name is generated based on how many files exists in project
         
         this.slice = true; //default value is true
         this.points = new ArrayList<int[][]>();//obviously empty when creating file //[[],[]]
