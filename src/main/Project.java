@@ -39,6 +39,10 @@ public class Project {
     public void addFile(ShapeFile f){
         this.files.add(f);
     }
+    public void setName(String name){
+        JSONname = name;
+        project = name;
+    }
     
     
 }

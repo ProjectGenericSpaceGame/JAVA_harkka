@@ -8,10 +8,7 @@ package main;
 import java.awt.Image;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.*;
 
 /**
  *
@@ -88,7 +85,12 @@ public class MainComponents {
     public int getActiveProject() {
         return activeProject;
     }
-
+    public void renameProject(JDialog upload, JLabel textField, String newName, DefaultListModel availableProjectsModel){
+        projects.get(activeProject).setName(newName);
+        textField.setText("Please give a JSON reference name for this file");
+        upload.setName("");
+        availableProjectsModel.set(activeProject,newName);
+    }
     public void setActiveProject(int activeProject) {
         this.activeProject = activeProject;
     }
@@ -159,12 +161,44 @@ public class MainComponents {
     }
     public void removeFile(DrawArea drawArea,DefaultListModel listModel,JList filesList){
         //Here we first remove file object, then set list and finally make program to change file. changeFile must be last call because it also changes activeFile
-        projects.get(activeProject).getAllFiles().remove(activeFile);
-        listModel.remove(activeFile);
-        filesList.setSelectedIndex(activeFile-1);
-        this.changeFile(activeFile-1, drawArea);
+        if(listModel.getSize() != 1){
+            if(filesList.getSelectedIndex() > 0){
+                filesList.setSelectedIndex(activeFile-1);
+            } else {
+                 filesList.setSelectedIndex(activeFile+1);    
+            }
+            projects.get(activeProject).getAllFiles().remove(activeFile);
+            listModel.remove(activeFile);
+            this.changeFile(filesList.getSelectedIndex(), drawArea);
+        } else {
+            projects.get(activeProject).getAllFiles().remove(activeFile);
+            listModel.clear();
+            activeFile = -1;
+        }
+    }
+    public void removeProject(DrawArea drawArea,DefaultListModel listModel,JList projectsList, DefaultListModel filesListModel){
         
-        
+        if(listModel.getSize() != 1){
+            int i = projectsList.getSelectedIndex();
+            if(i > 0){
+                projectsList.setSelectedIndex(activeProject-1);
+            } else {
+                projectsList.setSelectedIndex(activeProject+1);
+            }
+            int j = projectsList.getSelectedIndex();
+            listModel.remove(activeProject);
+            projects.remove(activeProject);
+            this.changeProject(j, drawArea, filesListModel);
+        } else {
+            listModel.clear();
+            filesListModel.clear();
+            drawArea.setImg(null);
+            ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
+            drawArea.setPoints(emptyAr);
+            projects.remove(activeProject);
+            activeProject = -1;
+            activeFile = -1;
+        }
     }
     public void startWrite(DrawArea drawArea,String path, String fileName){
         ShapeSplitter shapeSplitter = new ShapeSplitter(drawArea.getImgData()[0],drawArea.getImgData()[1],projects.get(activeProject).getAllFiles(),fileName,path);

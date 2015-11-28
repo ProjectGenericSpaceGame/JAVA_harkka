@@ -45,7 +45,7 @@ public class GUI extends javax.swing.JFrame {
 
         upload = new javax.swing.JDialog();
         settings = new javax.swing.JDialog();
-        jLabel1 = new javax.swing.JLabel();
+        uploadMainText = new javax.swing.JLabel();
         givenRefName = new javax.swing.JTextField();
         refDialCancel = new javax.swing.JButton();
         refDialOK = new javax.swing.JButton();
@@ -144,8 +144,8 @@ public class GUI extends javax.swing.JFrame {
         upload.setMinimumSize(new java.awt.Dimension(400, 225));
         upload.setPreferredSize(new java.awt.Dimension(400, 225));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Please give a JSON reference name for this file");
+        uploadMainText.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        uploadMainText.setText("Please give a JSON reference name for this file");
 
         givenRefName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         givenRefName.setText("Shape1");
@@ -262,7 +262,7 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(givenRefName, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(uploadLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                        .addComponent(uploadMainText, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                         .addContainerGap())))
             .addComponent(jSeparator2)
             .addGroup(uploadLayout.createSequentialGroup()
@@ -276,7 +276,7 @@ public class GUI extends javax.swing.JFrame {
             uploadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(uploadLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(uploadMainText, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -487,7 +487,7 @@ public class GUI extends javax.swing.JFrame {
         picScrField.setText("...");
         picScrField.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                picScrFieldMouseClicked(evt);
+                picScrFieldMouseClicked(null);
             }
         });
 
@@ -579,7 +579,7 @@ public class GUI extends javax.swing.JFrame {
         }
         deleteProjectBtn.setBackground(new java.awt.Color(255, 255, 255));
         deleteProjectBtn.setActionCommand("deleteProject");
-        deleteProjectBtn.setToolTipText("rename");
+        deleteProjectBtn.setToolTipText("delete project");
         //renameProjectBtn.setBorder(null);
         //renameProjectBtn.setBorderPainted(false);
         deleteProjectBtn.setContentAreaFilled(false);
@@ -616,7 +616,7 @@ public class GUI extends javax.swing.JFrame {
         }
         removeFileBtn.setBackground(new java.awt.Color(255, 255, 255));
         removeFileBtn.setActionCommand("deleteFile");
-        removeFileBtn.setToolTipText("rename");
+        removeFileBtn.setToolTipText("delete file");
         //renameFileBtn.setBorder(null);
         //renameFileBtn.setBorderPainted(false);
         removeFileBtn.setContentAreaFilled(false);
@@ -809,15 +809,19 @@ public class GUI extends javax.swing.JFrame {
     }// </editor-fold>                        
     //tässä on listaeventit
     private void availableFilesEvent(MouseEvent e){
-        mainComponents.changeFile(availableFiles.getSelectedIndex(),drawArea);//Uudelleen piirtäminen tehdään mainComponentin ja DrawArean yhteistyönä jotta GUIn koodista ei tulisi clusterfuckkia
-        updateRenamer();
-        repaint();
+        if(availableFilesModel.getSize() > 0){
+            mainComponents.changeFile(availableFiles.getSelectedIndex(),drawArea);//Uudelleen piirtäminen tehdään mainComponentin ja DrawArean yhteistyönä jotta GUIn koodista ei tulisi clusterfuckkia
+            updateRenamer();
+            repaint();
+        }
     };
      private void availableProjectsEvent(MouseEvent e){
-        mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);//sama kuin edellä
-        this.availableFiles.setSelectedIndex(0);
-        updateRenamer();
-        repaint();
+        if(availableProjectsModel.getSize() > 0){
+            mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);//sama kuin edellä
+            this.availableFiles.setSelectedIndex(0);
+            updateRenamer();
+            repaint();
+        }
     };
     //tässä loput eventit
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
@@ -905,16 +909,26 @@ public class GUI extends javax.swing.JFrame {
 
     private void refDialOKActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
-        mainComponents.renameFile(this.givenRefName.getText(), availableFilesModel);
+        if(upload.getName() != "project"){
+            mainComponents.renameFile(this.givenRefName.getText(), availableFilesModel);
+        } else {
+            mainComponents.renameProject(upload,uploadMainText,givenRefName.getText(),availableProjectsModel);
+        }
         updateRenamer();
         upload.dispose();
     }                                         
     
-    private void picScrFieldMouseClicked(java.awt.event.MouseEvent evt) {                                         
+    private void picScrFieldMouseClicked(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-        if(availableProjectsModel.getSize() != 0){ 
-        upload.setVisible(true);
+        if((evt == null && availableProjectsModel.getSize() != 0) || (availableProjectsModel.getSize() != 0 && !(evt.getActionCommand().equals("renameProject")))){ 
+            upload.setVisible(true);
+        } else if(evt.getActionCommand().equals("renameProject")){
+            uploadMainText.setText("please give a new project Name");
+            upload.setName("project");
+            this.givenRefName.setText(mainComponents.getProjectName());
+            upload.setVisible(true);
         }
+        
     }                                        
 
     private void fileNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
@@ -967,15 +981,21 @@ public class GUI extends javax.swing.JFrame {
     private void leftNaviBrowersActionPerformed(java.awt.event.ActionEvent evt){
         String source = evt.getActionCommand();
         if(source == "renameProject"){
-            
+            picScrFieldMouseClicked(evt);
         } else if(source == "deleteProject"){
-            
+            if(availableProjectsModel.getSize() > 0){
+                mainComponents.removeProject(this.drawArea,availableProjectsModel,availableProjects,availableFilesModel);
+                updateRenamer();
+                repaint();
+            }
         } else if(source == "renameFile"){
-            picScrFieldMouseClicked(null);
+            picScrFieldMouseClicked(evt);
         } else if(source == "deleteFile"){
-            mainComponents.removeFile(this.drawArea,availableFilesModel,availableFiles);
-            updateRenamer();
-            repaint();
+            if(availableProjectsModel.getSize() > 0){
+                mainComponents.removeFile(this.drawArea,availableFilesModel,availableFiles);
+                updateRenamer();
+                repaint();
+            }
         }
     }
     private void updateRenamer(){
@@ -1028,7 +1048,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton JSONPathBtn;
     private javax.swing.JButton cancelWriteBtn;
     private javax.swing.JTextField givenRefName;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel uploadMainText;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
