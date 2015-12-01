@@ -5,13 +5,14 @@
  */
 package main;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author RAndom MC
  */
-public class Project {
+public class Project implements Serializable {
     private String project;
     private String JSONname;
     private ArrayList<ShapeFile> files;
@@ -43,6 +44,4 @@ public class Project {
         JSONname = name;
         project = name;
     }
-    
-    
 }

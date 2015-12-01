@@ -53,6 +53,21 @@ public class FileSelector extends GUI implements Accessible {
             }
         //jos halutaan tallennussijainti    
         } else if(usage == 2){
+            //chooser.setApproveButtonText("Save");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            //chooser.setAcceptAllFileFilterUsed(false);
+            returned = chooser.showOpenDialog(this);    
+            if (returned == JFileChooser.APPROVE_OPTION) {     
+                try{
+                    this.path = chooser.getSelectedFile().getAbsolutePath();
+                }catch(Exception e){
+                    System.out.println("Error while reading the path"); 
+                }
+            } else if (returned == JFileChooser.CANCEL_OPTION){
+                System.out.println("User didnt select a path");
+            }
+        } else if(usage == 3){
+            chooser.setApproveButtonText("Save");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             //chooser.setAcceptAllFileFilterUsed(false);
             returned = chooser.showOpenDialog(this);    

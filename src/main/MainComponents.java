@@ -7,6 +7,10 @@ package main;
 
 import java.awt.Image;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -50,7 +54,6 @@ public class MainComponents {
             }
         } else {
             return "";
-         // ime paskaa
         }
     }
     
@@ -207,15 +210,36 @@ public class MainComponents {
         } else 
             shapeSplitter.jumpToWrite();
     }
-   /* public void checkPoints(){
-        ArrayList pointten =  this.projects.get(activeProject).getFile(activeFile).getPoints();
-        if (pointten.isEmpty()){
-            this.projects.get(activeProject).getFile(activeFile).setPoints([][]);
+
+    public void saveProject(){
+        FileSelector selector = new FileSelector(3);
+        selector.getPath();
+        FileOutputStream fileOut;
+        ObjectOutputStream objOut = null;
+        // Haetaan aktiivisen projektin nimi
+        String projectname = projects.get(activeProject).getName();
+        try{
+            // tehdään projektin nimellä uusi .dat -tiedosto
+            fileOut = new FileOutputStream(new File(selector.getPath()+projectname+".dat"));
+            // kirjoitetaan avattuun streamiin
+            objOut = new ObjectOutputStream(fileOut);
+            // kirjoitetaan aktiivinen projekti virtaan
+            objOut.writeObject(projects.get(activeProject));
+            objOut.flush();
+        }catch(Exception e){
+            System.out.println("Error ocurred: "+e);
+        } finally {
+            try {
+                if (objOut != null){
+                    objOut.close();
+                }
+            } catch (IOException ioe) {
+                System.out.println("Error occured while closing file: "+ioe);
+            }
         }
+    }
+    
+    public void openProject(){
         
     }
-    */
-    
-    
-    
 }

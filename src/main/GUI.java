@@ -840,6 +840,7 @@ public class GUI extends javax.swing.JFrame {
         //int test = file.removePoint(29, 21);
         //System.out.println(file.getPoints().size());
     }
+    
     // tämä metodi toteuttaa tapahtuman käsittelyn kun painetaan draw -painiketta.
     private void drawToolActionPerformed(java.awt.event.ActionEvent evt) {                                            
         this.drawArea.addMouseListener(new MousePressedTracker());
@@ -890,20 +891,17 @@ public class GUI extends javax.swing.JFrame {
         
                                                
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
     }                                           
 
     private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
         giveProjectName.setVisible(true);
     } 
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {                                     
-        
+        mainComponents.saveProject();
     }                                    
 
     private void refDialCancelActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
         upload.dispose();
     }                                             
 
@@ -928,7 +926,6 @@ public class GUI extends javax.swing.JFrame {
             this.givenRefName.setText(mainComponents.getProjectName());
             upload.setVisible(true);
         }
-        
     }                                        
 
     private void fileNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
@@ -936,17 +933,13 @@ public class GUI extends javax.swing.JFrame {
     }                                           
 
     private void writeJSONBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
         writeJSONconfirm.dispose();
         mainComponents.startWrite(drawArea, filePathTxtField.getText(),fileNameTxtField.getText());
     }
     private void cancelWriteBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
         writeJSONconfirm.dispose();
     }    
-     private void writeJSONMainBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_writeJSONMainBtnActionPerformed
-        // TODO add your handling code here:
-        writeJSONconfirm.setVisible(true);
+     private void writeJSONMainBtnActionPerformed(java.awt.event.ActionEvent evt) {
         Settings setting = new Settings();
         String path = setting.getDefaultPath();
         String name = setting.getDefaulthFileName();
@@ -954,13 +947,12 @@ public class GUI extends javax.swing.JFrame {
         //fileNameTxtField.setText(name);
         fileNameTxtField.setText(mainComponents.getProjectName());
         // fileNameTxtField.setText(mainComponents.getProjectName());
-    }//GEN-LAST:event_writeJSONMainBtnActionPerformed
+    }
     private void JSONPathBtnPerformed(java.awt.event.ActionEvent evt){
         FileSelector file = new FileSelector(2);
         filePathTxtField.setText(file.getPath());   
     } 
     private void giveProjectNameCancelActionPerformed(java.awt.event.ActionEvent evt) {                                                      
-        // TODO add your handling code here:
         giveProjectName.dispose();
     }                                                     
 
