@@ -890,7 +890,8 @@ public class GUI extends javax.swing.JFrame {
     }  
         
                                                
-    private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {                                            
+    private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {    
+        mainComponents.openProject();
     }                                           
 
     private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {                                           
@@ -917,7 +918,6 @@ public class GUI extends javax.swing.JFrame {
     }                                         
     
     private void picScrFieldMouseClicked(java.awt.event.ActionEvent evt) {                                         
-        // TODO add your handling code here:
         if((evt == null && availableProjectsModel.getSize() != 0) || (availableProjectsModel.getSize() != 0 && !(evt.getActionCommand().equals("renameProject")))){ 
             upload.setVisible(true);
         } else if(evt.getActionCommand().equals("renameProject")){
@@ -929,7 +929,7 @@ public class GUI extends javax.swing.JFrame {
     }                                        
 
     private void fileNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
+        // TODO add your handling code here. No!:
     }                                           
 
     private void writeJSONBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             

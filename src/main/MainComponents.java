@@ -7,11 +7,15 @@ package main;
 
 import java.awt.Image;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -23,6 +27,7 @@ public class MainComponents {
     private int activeFile;
     private int activeProject;
     private Image img;
+    private boolean asd = false;
     
     public MainComponents(){
         this.projects = new ArrayList<Project>();
@@ -36,7 +41,18 @@ public class MainComponents {
     public String newFile(DrawArea drawArea, DefaultListModel availableFilesModel,JList availableFiles){
         if(drawArea != null){
             FileSelector tiedosto = new FileSelector(1);
-            if(tiedosto.getImage() != null){
+            /*if(projects.get(activeProject).getSaved()){
+                String p = projects.get(activeProject).getFile(activeFile).getImgPath();
+                BufferedImage img;
+                try {
+                    img = ImageIO.read(new File(p));
+                    drawArea.setImg(img);
+                } catch (IOException ex) {
+                    System.out.println("Error "+ex);
+                }
+                return "";
+            }*/
+            if (tiedosto.getImage() != null){
                 drawArea.setImg(tiedosto.getImage());
                 ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
                 drawArea.setPoints(emptyAr);
@@ -210,10 +226,10 @@ public class MainComponents {
         } else 
             shapeSplitter.jumpToWrite();
     }
-
+    // projektin tallentaminen .dat -tiedostoon.
     public void saveProject(){
         FileSelector selector = new FileSelector(3);
-        selector.getPath();
+        //selector.getPath();
         FileOutputStream fileOut;
         ObjectOutputStream objOut = null;
         // Haetaan aktiivisen projektin nimi
@@ -238,8 +254,29 @@ public class MainComponents {
             }
         }
     }
-    
+    // projektin avaaminen
     public void openProject(){
-        
+        FileInputStream fileIn;
+        ObjectInputStream objIn = null;
+        FileSelector selector = new FileSelector(4);
+        try {
+            // avataan valittu .dat tiedosto  
+            fileIn = new FileInputStream(new File(selector.getPath()));
+            objIn = new ObjectInputStream(fileIn);
+            Project p = (Project)objIn.readObject();
+            this.newProject(p);
+            System.out.println(p.getName());
+        } catch (IOException io){
+            System.out.println("Error ocurred: "+io);
+        } catch (ClassNotFoundException n) {
+            System.out.println("Error while opening saved project: "+n);
+        } finally {
+            try { if (objIn != null) objIn.close();
+            } catch (IOException ioe) {
+                System.out.println("Error occured while closing file: "+ioe);
+            }
+        }
+       
+
     }
 }

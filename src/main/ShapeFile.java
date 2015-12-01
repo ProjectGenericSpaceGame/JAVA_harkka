@@ -7,14 +7,16 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Virtuasity Inc.
  */
-public class ShapeFile {
-    private BufferedImage img; //where to find picture used as drawing template
+public class ShapeFile implements Serializable{
+    private BufferedImage img;//where to find picture used as drawing template
+    private String imgPath;
     private ArrayList<int[][]> points; //Array holding user defined points
     private ArrayList<int[][]> pointsToSliceFrom;
     private ArrayList<int[]> smallerShapes;
@@ -109,6 +111,14 @@ public class ShapeFile {
     }
     public ArrayList getSmallerShapes(){
         return this.smallerShapes;
+    }
+    
+    public String getImgPath(){
+        return this.imgPath;
+    }
+    
+    public void setImgPath(String path){
+        this.imgPath = path;
     }
     
     
