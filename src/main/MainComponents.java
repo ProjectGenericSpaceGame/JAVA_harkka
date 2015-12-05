@@ -7,7 +7,6 @@ package main;
 
 import java.awt.Image;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,6 +15,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.swing.*;
 
 /**
@@ -57,7 +57,7 @@ public class MainComponents {
                 ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
                 drawArea.setPoints(emptyAr);
                 Settings setting = new Settings();
-                ShapeFile file = new ShapeFile(tiedosto.getImage(),this.getFilesAmount()+1,setting.getDefaulthFileName());
+                ShapeFile file = new ShapeFile(tiedosto.getImage(), tiedosto.getPath(), this.getFilesAmount()+1,setting.getDefaulthFileName());
                 setting = null;
                 availableFilesModel.addElement(file.getShapeName());
                 projects.get(activeProject).addFile(file);
@@ -232,6 +232,7 @@ public class MainComponents {
         //selector.getPath();
         FileOutputStream fileOut;
         ObjectOutputStream objOut = null;
+        ImageOutputStream out = null;
         // Haetaan aktiivisen projektin nimi
         String projectname = projects.get(activeProject).getName();
         try{
@@ -239,6 +240,8 @@ public class MainComponents {
             fileOut = new FileOutputStream(new File(selector.getPath()+projectname+".dat"));
             // kirjoitetaan avattuun streamiin
             objOut = new ObjectOutputStream(fileOut);
+         
+            //ImageIO.write(projects.get(activeFile).getFile(0).getImgSrc(), "png", new File("testikuva.png"));
             // kirjoitetaan aktiivinen projekti virtaan
             objOut.writeObject(projects.get(activeProject));
             objOut.flush();
@@ -255,7 +258,7 @@ public class MainComponents {
         }
     }
     // projektin avaaminen
-    public void openProject(){
+    public Project openProject(){
         FileInputStream fileIn;
         ObjectInputStream objIn = null;
         FileSelector selector = new FileSelector(4);
@@ -264,12 +267,13 @@ public class MainComponents {
             fileIn = new FileInputStream(new File(selector.getPath()));
             objIn = new ObjectInputStream(fileIn);
             Project p = (Project)objIn.readObject();
-            this.newProject(p);
-            System.out.println(p.getName());
+            return p;
         } catch (IOException io){
             System.out.println("Error ocurred: "+io);
+            return null;
         } catch (ClassNotFoundException n) {
             System.out.println("Error while opening saved project: "+n);
+            return null;
         } finally {
             try { if (objIn != null) objIn.close();
             } catch (IOException ioe) {
@@ -277,6 +281,6 @@ public class MainComponents {
             }
         }
        
-
+        
     }
 }
