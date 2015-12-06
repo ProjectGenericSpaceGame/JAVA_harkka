@@ -44,6 +44,7 @@ public class FileSelector extends GUI {
                 try{
                     this.file = chooser.getSelectedFile();
                     this.path = chooser.getSelectedFile().getAbsolutePath();
+                    System.out.println(this.path);
                     this.image = ImageIO.read(file);
                 }catch(IOException e){
                     System.out.println("Error while reading the file "+e); 
@@ -74,6 +75,7 @@ public class FileSelector extends GUI {
             if (returned == JFileChooser.APPROVE_OPTION) {     
                 try{
                     this.path = chooser.getSelectedFile().getAbsolutePath();
+                    System.out.println("Valitsemasi polku on "+this.path);
                 }catch(Exception e){
                     System.out.println("Error while reading the path"); 
                 }

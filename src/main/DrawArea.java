@@ -72,7 +72,8 @@ public class DrawArea extends JPanel{
                 }
             }
         };
-        for(int i = 0;i<points.size();i++){//vanhan mallinen luuppi koska tässä tutkitaan iteraaattorin arvoa
+        for(int i = 0;i<points.size();i++){
+        //vanhan mallinen luuppi koska tässä tutkitaan iteraaattorin arvoa
             if(i != 0) {
                 //asetetaan sisemmälle viivalle väri ja paksuus     
                 g2d.setColor(Color.black);
@@ -84,11 +85,9 @@ public class DrawArea extends JPanel{
                 g2d.setStroke(new BasicStroke(1f));
                 // hankitaan pistetaulukosta aloitus ja lopetuspisteet ja piirretään viiva niiden välille
                 g2d.drawLine(points.get(i-1)[0][0], points.get(i-1)[0][1], points.get(i)[0][0], points.get(i)[0][1]);
-                
                 // Tehdään uusi label
-                //ImageIcon icon = new ImageIcon(getClass().getResource("DottSmall.jpg"));
                 JLabel point = new JLabel();
-               // icon.paintIcon(this, g, 10, 200);
+                //Asetetaan kuvaksi sininen neliö
                 point.setIcon(this.icon);
                 point.setName(""+i);
                 point.addMouseListener(pointListener);
@@ -96,13 +95,11 @@ public class DrawArea extends JPanel{
                 point.setBounds(points.get(i)[0][0] -5, points.get(i)[0][1] -5, 15, 15);
                 this.add(point);
             } else {
-               // ImageIcon icon = new ImageIcon("DottSmall.png");
+                // Tämä tehdään jotta saadaan myös ensimmäinen piste
                 JLabel point = new JLabel();
-               // icon.paintIcon(this, g, 10, 200);
                 point.setIcon(this.icon);
                 point.setName(""+i);
                 point.addMouseListener(pointListener);
-                // lisätään ensimmäinen label 
                 point.setBounds(points.get(i)[0][0] -5, points.get(i)[0][1] -5, 15, 15);
                 this.add(point);
             }
