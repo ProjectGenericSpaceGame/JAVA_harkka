@@ -7,6 +7,7 @@ package main;
 
 import java.awt.Image;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -282,5 +283,9 @@ public class MainComponents {
         }
        
         
+    }
+    public void removePoint(Object e){ 
+        JLabel point = (JLabel) e;
+        this.getActualActiveFile().removePoint(Integer.parseInt(point.getName()));
     }
 }

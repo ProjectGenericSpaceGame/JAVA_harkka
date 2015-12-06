@@ -85,26 +85,8 @@ public class ShapeFile implements Serializable{
         this.graphics.add(grap);
     }
     //removing points is done so that function iterates through array of points and check if clicked point is within coordinates of any point. If it is, this point is removed
-    public int removePoint(int mouseX, int mouseY){
-       int iter = 0;
-       int coordXrangeMin;
-       int coordXrangeMax;
-       int coordYrangeMin;
-       int coordYrangeMax;
-       while(iter < points.size()){
-           int pointArray[][] = points.get(iter);
-           coordXrangeMin = pointArray[0][0]-5;
-           coordXrangeMax = pointArray[0][0]+5;
-           coordYrangeMin = pointArray[0][1]-5;
-           coordYrangeMax = pointArray[0][1]+5;
-           if(coordXrangeMin < mouseX && mouseX < coordXrangeMax){
-               if(coordYrangeMin < mouseY && mouseY < coordYrangeMax){
-                   points.remove(iter);
-                   return iter;
-                }
-           }
-       }
-       return -1;
+    public void removePoint(int index){
+       this.points.remove(index);
     }
     public void setNewSmallerShape(int[] newShape){
         this.smallerShapes.add(newShape);

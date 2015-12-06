@@ -129,7 +129,7 @@ public class GUI extends javax.swing.JFrame {
         writeJSONMainBtn = new javax.swing.JButton();
         drawTool = new javax.swing.JToggleButton();
         deletePointTool = new javax.swing.JToggleButton();
-        drawArea = new DrawArea(null,this.mainComponents);//custom luokka
+        drawArea = new DrawArea(null,this.mainComponents,this);//custom luokka
         NewProjectNameLabel1 = new javax.swing.JLabel();
         newProjectNameField = new javax.swing.JTextField();
         giveProjectNameCancel = new javax.swing.JButton();
@@ -843,6 +843,11 @@ public class GUI extends javax.swing.JFrame {
     
     // tämä metodi toteuttaa tapahtuman käsittelyn kun painetaan draw -painiketta.
     private void drawToolActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        if(drawArea.getMouseListeners().length != 0){
+            MouseListener rem = drawArea.getMouseListeners()[0];
+            drawArea.removeMouseListener(rem);
+        }
+        drawArea.setStatus(1);
         this.drawArea.addMouseListener(new MousePressedTracker());
          deletePointTool.setSelected(false);
         //this.drawArea.setLayout(new GridLayout(0, 1));
@@ -855,8 +860,12 @@ public class GUI extends javax.swing.JFrame {
     
     private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {
         drawTool.setSelected(false);
-        MouseListener rem = drawArea.getMouseListeners()[0];
-        drawArea.removeMouseListener(rem);
+        drawArea.setStatus(2);
+        if(drawArea.getMouseListeners().length != 0){
+            MouseListener rem = drawArea.getMouseListeners()[0];
+            drawArea.removeMouseListener(rem);
+        }
+        this.drawArea.addMouseListener(new PointRemovedTracker());
     }
     
     class MousePressedTracker extends MouseAdapter {
@@ -866,6 +875,12 @@ public class GUI extends javax.swing.JFrame {
             y2 = e.getY();
             Graphics g = drawArea.getGraphics();
             mainComponents.setCoord(x2, y2, g, drawArea);
+            repaint();
+        }
+    }
+    class PointRemovedTracker extends MouseAdapter {
+         @Override
+        public void mousePressed(MouseEvent e){
             repaint();
         }
     }
