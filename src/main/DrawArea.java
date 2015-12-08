@@ -13,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -29,7 +30,8 @@ public class DrawArea extends JPanel{
     private MainComponents mainComponents;
     private GUI gui;//so that we can escape child class and call repaint on whole window
     private int status; //1 = draw tool, 2 = delete tool
-    ImageIcon icon = new ImageIcon("DottSmall.png");
+    URL imageURL = getClass().getResource("images/DottSmall.png");
+    ImageIcon icon = new ImageIcon(imageURL);
 
     public DrawArea(BufferedImage img, MainComponents mainComponents,GUI gui) {
         this.img = img;

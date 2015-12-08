@@ -568,7 +568,7 @@ public class GUI extends javax.swing.JFrame {
         renameProjectBtn.setPreferredSize(new java.awt.Dimension(20, 20));
         BufferedImage img;
         try {
-            img = ImageIO.read(new File("rename.png"));
+            img = ImageIO.read(getClass().getResource("images/rename.png"));
         } catch (IOException e) {
             e.printStackTrace();
             img = null;
@@ -586,7 +586,7 @@ public class GUI extends javax.swing.JFrame {
         deleteProjectBtn.setPreferredSize(new java.awt.Dimension(20, 20));
         BufferedImage img2;
         try {
-            img2 = ImageIO.read(new File("close.png"));
+           img2 = ImageIO.read(getClass().getResource("images/close.png"));
         } catch (IOException e) {
             e.printStackTrace();
             img2 = null;
@@ -605,7 +605,7 @@ public class GUI extends javax.swing.JFrame {
         renameFileBtn.setPreferredSize(new java.awt.Dimension(20, 20));
         BufferedImage imgForFiles;
         try {
-            imgForFiles = ImageIO.read(new File("rename.png"));
+            imgForFiles = ImageIO.read(getClass().getResource("images/rename.png"));
         } catch (IOException e) {
             e.printStackTrace();
             imgForFiles = null;
@@ -623,7 +623,7 @@ public class GUI extends javax.swing.JFrame {
         removeFileBtn.setPreferredSize(new java.awt.Dimension(20, 20));
         BufferedImage img2ForFiles;
         try {
-            img2ForFiles = ImageIO.read(new File("close.png"));
+            img2ForFiles = ImageIO.read(getClass().getResource("images/close.png"));
         } catch (IOException e) {
             e.printStackTrace();
             img2ForFiles = null;
@@ -871,11 +871,13 @@ public class GUI extends javax.swing.JFrame {
     class MousePressedTracker extends MouseAdapter {
         @Override
         public void mousePressed(MouseEvent e){
-            x2 = e.getX();
-            y2 = e.getY();
-            Graphics g = drawArea.getGraphics();
-            mainComponents.setCoord(x2, y2, g, drawArea);
-            repaint();
+            if(mainComponents.getActiveFile() != -1){
+                x2 = e.getX();
+                y2 = e.getY();
+                Graphics g = drawArea.getGraphics();
+                mainComponents.setCoord(x2, y2, g, drawArea);
+                repaint();
+            }
         }
     }
     class PointRemovedTracker extends MouseAdapter {
@@ -969,6 +971,7 @@ public class GUI extends javax.swing.JFrame {
         writeJSONconfirm.dispose();
     }    
      private void writeJSONMainBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        writeJSONconfirm.setVisible(true);
         Settings setting = new Settings();
         String path = setting.getDefaultPath();
         String name = setting.getDefaulthFileName();

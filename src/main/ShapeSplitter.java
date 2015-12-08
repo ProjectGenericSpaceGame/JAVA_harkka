@@ -91,11 +91,14 @@ public class ShapeSplitter extends JSONwriter{
                 points.remove(block);
             }
             removeThese.clear();
-            sf.slicePoints(points);
+            
         }
         super.write(files, projectName, filePath);
     }
     public void jumpToWrite(){
+        for(ShapeFile sf:this.files){
+            sf.slicePoints(sf.getPoints());
+        }
         super.write(files, projectName, filePath);
     }
     

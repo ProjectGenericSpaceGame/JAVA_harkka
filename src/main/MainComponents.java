@@ -226,9 +226,9 @@ public class MainComponents {
     }
     public void startWrite(DrawArea drawArea,String path, String fileName){
         ShapeSplitter shapeSplitter = new ShapeSplitter(drawArea.getImgData()[0],drawArea.getImgData()[1],projects.get(activeProject).getAllFiles(),fileName,path);
-        if(projects.get(activeProject).getFile(activeFile).isSlice()){
+        /*if(projects.get(activeProject).getFile(activeFile).isSlice()){
             shapeSplitter.splitToSmaller();
-        } else 
+        } else*/ 
             shapeSplitter.jumpToWrite();
     }
     // projektin tallentaminen  
@@ -361,5 +361,6 @@ public class MainComponents {
     public void removePoint(Object e){ 
         JLabel point = (JLabel) e;
         this.getActualActiveFile().removePoint(Integer.parseInt(point.getName()));
+        System.out.println(this.getActualActiveFile().getPoints().size());
     }
 }
