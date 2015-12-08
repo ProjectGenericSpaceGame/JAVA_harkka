@@ -907,6 +907,7 @@ public class GUI extends javax.swing.JFrame {
                                                
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {    
         Project opened = mainComponents.openProject();
+        if (opened != null){
         mainComponents.newProject(opened);
         this.availableProjectsModel.addElement(opened.getName());
         this.availableProjects.setSelectedIndex(mainComponents.getProjectAmount()-1);
@@ -919,6 +920,7 @@ public class GUI extends javax.swing.JFrame {
         repaint();
         //System.out.println("kuvan polku on" +opened.getFile(0).getImgPath());
         //System.out.println("tietoja kuvasta" +opened.getFile(0).getImgSrc());
+        }
     }                                           
 
     private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {                                           

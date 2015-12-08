@@ -104,7 +104,11 @@ public class FileSelector extends GUI {
     }
     // Palauttaa absoluuttisen polun tiedostoon
     public String getPath(){
-        // haluttuun kansioon saadaan tallennettua tiedosto lisäämällä kenoviiva
-        return this.path+"/";
+       if(path == null){
+           return "none";
+       }    // haluttuun kansioon saadaan tallennettua tiedosto lisäämällä kenoviiva
+       else {
+           return this.path+"/";
+       }   
     }
 } // class
