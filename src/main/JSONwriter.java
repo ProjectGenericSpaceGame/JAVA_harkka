@@ -59,16 +59,23 @@ public class JSONwriter {
                         signedArea += (x1*y2 - x2*y1);
                         t++;//because next value is y of current we rise t by 2 to go to next x
                     }
-                    if(signedArea > 0){//this means that points are in wrong order and now we flip the order
-                        for(int l = 0; l < ar.length / 2; l++)
+                    System.out.println(signedArea);
+                    if(signedArea < 0){//this means that points are in wrong order and now we flip the order
+                        System.out.println("smaller part reverse");
+                        for(int l = 0; l < ar.length / 2; l+=2)
                         {
                             int temp = ar[l];
-                            ar[l] = ar[ar.length - l - 1];
+                            ar[l] = ar[ar.length - l - 2];
+                            ar[ar.length - l - 2] = temp;
+                            temp = ar[l+1];
+                            ar[l+1] = ar[ar.length - l - 1];
                             ar[ar.length - l - 1] = temp;
                         }
-                        int temp = ar[0];
+                        /*int temp = ar[0];
                         ar[0] = ar[ar.length - 1];
-                        ar[ar.length - 1] = temp;
+                        ar[ar.length - 1] = temp;*/
+                    } else {
+                        System.out.println("smaller part no reverse");
                     }
                     //and for writing
                     for(int t = 0;t<ar.length;t++){
@@ -108,12 +115,12 @@ public class JSONwriter {
                         signedArea += (x1*y2 - x2*y1);
                         t++;//because next vaule is y of current we rise t by 2 to go to next x
                     }
-                    if(signedArea > 0){//this means that points are in wrong order and now we flip the order
-                       Collections.reverse(points);
-                        //this.reverse = true;
-                       /*int [][]temp = points.get(0);
-                       points.set(0, points.get(points.size()-1));
-                       points.set(points.size()-1, temp);*/
+                    System.out.println(signedArea);
+                    if(signedArea < 0){//this means that points are in wrong order and now we flip the order
+                        Collections.reverse(points);
+                        System.out.println("bigger part reverse");
+                    } else {
+                        System.out.println("bigger part no reverse");
                     }
                 for(int l = 0;l<points.size();l++){
                         if(l != points.size()-1){

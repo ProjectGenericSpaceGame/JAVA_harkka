@@ -22,7 +22,6 @@ public class ShapeFile implements Serializable{
     private ArrayList<int[]> smallerShapes;
     private boolean slice; //Should intelligent shapetracker be used for splicing the body to smaller parts
     private String shapeName; //Actual name of this body, this will be written to JSON and will work as a reference name when using JSON file
-    private ArrayList<Graphics> graphics;
     
     //private ShapeFile self = this; //this is used if function scope prevents using "this" keyword
     
@@ -37,7 +36,6 @@ public class ShapeFile implements Serializable{
         this.slice = true; //default value is true
         this.points = new ArrayList<int[][]>();//obviously empty when creating file //[[],[]]
         //this.pointsToSliceFrom = new ArrayList<int[][]>();//obviously empty when creating file //[[],[]]
-        this.graphics = new ArrayList<Graphics>();
         this.smallerShapes = new ArrayList<int[]>();
     }
 
@@ -81,10 +79,6 @@ public class ShapeFile implements Serializable{
     public void setShapeName(String shapeName) {
         this.shapeName = shapeName;
     }
-    public void addGraphics(Graphics grap){
-        this.graphics.add(grap);
-    }
-    //removing points is done so that function iterates through array of points and check if clicked point is within coordinates of any point. If it is, this point is removed
     public void removePoint(int index){
        this.points.remove(index);
     }

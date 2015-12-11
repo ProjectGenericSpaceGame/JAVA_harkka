@@ -52,7 +52,7 @@ public class DrawArea extends JPanel{
     }
     public void setPoints(ArrayList<int[][]> points) {
         this.points = points;
-    }
+    }//reference, shortcut to a points arrayList in currently active shapeFile
     public void setStatus(int status){
         if(status > 0 && status < 3){
             this.status = status;

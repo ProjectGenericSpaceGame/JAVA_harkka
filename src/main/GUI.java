@@ -843,7 +843,7 @@ public class GUI extends javax.swing.JFrame {
     
     // tämä metodi toteuttaa tapahtuman käsittelyn kun painetaan draw -painiketta.
     private void drawToolActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        if(drawArea.getMouseListeners().length != 0){
+        if(drawArea.getMouseListeners().length != 0){//poistaa pisteen poistajan kuuntelijan
             MouseListener rem = drawArea.getMouseListeners()[0];
             drawArea.removeMouseListener(rem);
         }
@@ -861,7 +861,7 @@ public class GUI extends javax.swing.JFrame {
     private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {
         drawTool.setSelected(false);
         drawArea.setStatus(2);
-        if(drawArea.getMouseListeners().length != 0){
+        if(drawArea.getMouseListeners().length != 0){//poistaa pisteen lisääjän kuuntelijan
             MouseListener rem = drawArea.getMouseListeners()[0];
             drawArea.removeMouseListener(rem);
         }

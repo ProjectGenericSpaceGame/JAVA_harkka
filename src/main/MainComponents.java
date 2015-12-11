@@ -178,7 +178,7 @@ public class MainComponents {
             newPoints[0][1] = y2;
             projects.get(activeProject).getFile(activeFile).setPoints(newPoints);
         }
-        drawArea.setPoints(projects.get(activeProject).getFile(activeFile).getPoints());
+        drawArea.setPoints(projects.get(activeProject).getFile(activeFile).getPoints());//here we have to update drawAreas point manually for some reason (unlike in removing)
         System.out.println("x "+x2+" y "+y2);
         //return point;
         drawArea.add(point);
@@ -226,10 +226,11 @@ public class MainComponents {
     }
     public void startWrite(DrawArea drawArea,String path, String fileName){
         ShapeSplitter shapeSplitter = new ShapeSplitter(drawArea.getImgData()[0],drawArea.getImgData()[1],projects.get(activeProject).getAllFiles(),fileName,path);
-        /*if(projects.get(activeProject).getFile(activeFile).isSlice()){
+        if(projects.get(activeProject).getFile(activeFile).isSlice()){
             shapeSplitter.splitToSmaller();
-        } else*/ 
+        } else{
             shapeSplitter.jumpToWrite();
+            }
     }
     // projektin tallentaminen  
     public void saveProject(){
