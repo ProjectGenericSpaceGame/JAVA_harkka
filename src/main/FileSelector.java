@@ -23,23 +23,26 @@ public class FileSelector extends GUI {
         private BufferedImage image = null;
         private int returned;
         private String path;
+        private String zipPath;
 
-    // konstruktori joka sisltää tiedostojen selailun
+    // constructor that includes file browsing
     public FileSelector(int usage){
-         // luodaan uusi JFileChooser
+         // Create new fileChooser
         JFileChooser chooser = new JFileChooser();
-         // muutetaan chooserin oletuskokoa
+        
+         // change default size
         chooser.setPreferredSize(new Dimension(600,600));
-        // poistetaan suodatin FileChooserista
+        // remove default filter
         chooser.removeChoosableFileFilter(chooser.getAcceptAllFileFilter());
-        //jos halutaan ladata kuva
-        if(usage == 1){ 
-            // lisätään suodatin kuville
+        // when importing images
+        if(usage == 1){
+            chooser.setDialogTitle("Choose a image file");
+            // add image filter
             FileFilter filter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes()); //bmp, jpg, jpeg, wbmp, pngm, gif
-             // lisätään suodatin FileChooseriin
+             // add filter to  FileChooser
             chooser.addChoosableFileFilter(filter);
             returned = chooser.showOpenDialog(this); 
-            // mikäli käyttäjä valitsi jonkun tiedoston
+            // if user selected something
             if (returned == JFileChooser.APPROVE_OPTION) {     
                 try{
                     this.file = chooser.getSelectedFile();
@@ -55,9 +58,9 @@ public class FileSelector extends GUI {
     
         // if choosing a folder to save the file to     
         } else if(usage == 2){
+            chooser.setDialogTitle("Choose a place to save");
             chooser.setApproveButtonText("Save");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            //chooser.setAcceptAllFileFilterUsed(false);
             returned = chooser.showOpenDialog(this);    
             if (returned == JFileChooser.APPROVE_OPTION) {     
                 try{
@@ -71,13 +74,15 @@ public class FileSelector extends GUI {
             }
         // if choosing a project file    
         } else if(usage == 3){
-            //FileFilter filter//chooser.addChoosableFileFilter(new FileNameExtensionFilter("Project", "DAT".);
-           // chooser.addChoosableFileFilter(new FileNameExtensionFilter("Project files", "dat"));
-            chooser.setAcceptAllFileFilterUsed(true);
+            chooser.setDialogTitle("Choose a project file");
+            chooser.addChoosableFileFilter(new FileNameExtensionFilter("Project", "ZIP"));
+            chooser.setApproveButtonText("Select");
+            chooser.setAcceptAllFileFilterUsed(false);
             returned = chooser.showOpenDialog(this);    
             if (returned == JFileChooser.APPROVE_OPTION) {     
                 try{
-                    this.path = chooser.getSelectedFile().getAbsolutePath();
+                    this.path = chooser.getSelectedFile().getParentFile().getAbsolutePath();
+                    this.zipPath = chooser.getSelectedFile().getPath();
                 }catch(Exception e){
                     System.out.println("Error while reading the path"); 
                 }
@@ -86,17 +91,22 @@ public class FileSelector extends GUI {
             }
         }
     }
-    // Palauttaa  kuvan
+    // return image
     public BufferedImage getImage(){
         return this.image;
     }
-    // Palauttaa absoluuttisen polun tiedostoon
+    // returns abslute path
     public String getPath(){
        if(path == null){
            return "none";
-       }    // haluttuun kansioon saadaan tallennettua tiedosto lisäämällä kenoviiva
+       }    
        else {
            return this.path+"/";
        }   
     }
+    
+    public String getZipPath(){
+        return this.zipPath;
+    }
+    
 } // class

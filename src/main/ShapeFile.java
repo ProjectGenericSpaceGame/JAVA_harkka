@@ -15,7 +15,8 @@ import java.util.ArrayList;
  * @author Virtuasity Inc.
  */
 public class ShapeFile implements Serializable{
-    transient BufferedImage img;//where to find picture used as drawing template
+    transient BufferedImage img;//where to find picture used as drawing template. This needs to be transient when saving eventhough it doestn get saved correctly
+    // because you cant write img to a dat 
     private String imgPath;
     private ArrayList<int[][]> points; //Array holding user defined points
     private ArrayList<int[][]> pointsToSliceFrom;

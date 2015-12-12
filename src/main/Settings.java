@@ -74,7 +74,7 @@ public class Settings {
     // return the default filename
     public String getDefaulthFileName(){
          if(this.isSettings != true){
-            return "";
+            return "shape";
         }else{
             return this.defaultFileName;
         }

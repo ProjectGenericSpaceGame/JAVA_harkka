@@ -35,6 +35,7 @@ public class MainComponents {
     private int activeProject;
     private Image img;
     private ArrayList<String> toZip;
+    private String currentImagePath = "";
     
     public MainComponents(){
         this.projects = new ArrayList<Project>();
@@ -48,17 +49,7 @@ public class MainComponents {
     public String newFile(DrawArea drawArea, DefaultListModel availableFilesModel,JList availableFiles){
         if(drawArea != null){
             FileSelector tiedosto = new FileSelector(1);
-            /*if(projects.get(activeProject).getSaved()){
-                String p = projects.get(activeProject).getFile(activeFile).getImgPath();
-                BufferedImage img;
-                try {
-                    img = ImageIO.read(new File(p));
-                    drawArea.setImg(img);
-                } catch (IOException ex) {
-                    System.out.println("Error "+ex);
-                }
-                return "";
-            }*/
+            
             if (tiedosto.getImage() != null){
                 drawArea.setImg(tiedosto.getImage());
                 ArrayList<int[][]> emptyAr = new ArrayList<int[][]>();
@@ -300,11 +291,12 @@ public class MainComponents {
                     }
                     // call for folder cleaner
                     try {
-                        //dirty fix to make sure that dat is actually closed. dat file stram is so slow to write that without this cleaning fill fail
+                        //dirty fix to make sure that dat is actually closed. dat file stream is so slow to write
+                        //that without this cleaning fill fail every time
                         Thread.sleep(200);
                         cleanFolder();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        System.out.println("Error occurred: "+e);
                     }
                 } catch (IOException ioe) {
                     System.out.println("Error occured while closing file: "+ioe);
@@ -344,7 +336,6 @@ public class MainComponents {
     //clean folder after zipping is done
     public void cleanFolder(){
         // delete all the files but the zip
-        //cant delete the dat file...
         for(int i = 0; i<= this.toZip.size()-1; i++){
             File file = new File(this.toZip.get(i));
             System.out.println("Deleting " +file.getName());
@@ -352,7 +343,7 @@ public class MainComponents {
                 if(file.delete()){
                     System.out.println(file.getName() + " is deleted");
                 } else{
-                    System.out.println("Delete operation is failed.");
+                    System.out.println("Delete operation has failed.");
                 }
             }
         }
@@ -363,24 +354,30 @@ public class MainComponents {
         FileInputStream fileIn;
         ObjectInputStream objIn = null;
         FileSelector selector = new FileSelector(3);
-        String dest = "D:/dontKillMe/";
-        System.out.println("Zipin polku on: "+selector.getPath());
-          try {
-        ZipFile zipFile = new ZipFile(selector.getPath());
-        zipFile.extractAll(dest);
+        this.currentImagePath = selector.getPath();
+        try {
+            ZipFile zipFile = new ZipFile(selector.getZipPath());
+            zipFile.extractAll(selector.getPath());
         } catch (ZipException e) {
               System.out.println("Zip error: "+e);
         }
+        String name="";
+         int idx = selector.getZipPath().lastIndexOf('\\');
+                if (idx > 0) {
+                  name = selector.getZipPath().substring(idx+1);
+                  int i = name.length();
+                  name = name.substring(0, i-4);  
+                }
        // if user selected a path
        if(selector.getPath() != null){
             try {
-                //open selected .dat file 
-                fileIn = new FileInputStream(new File(selector.getPath()));
+                //open .dat file 
+                fileIn = new FileInputStream(new File(selector.getPath()+name+".dat"));
                 objIn = new ObjectInputStream(fileIn);
                 Project p = (Project)objIn.readObject();
                 return p;
             } catch (IOException io){
-                System.out.println("Error ocurred: "+io);
+                System.out.println("Error ocurred here: "+io);
                 return null;
             } catch (ClassNotFoundException n) {
                 System.out.println("Error while opening saved project: "+n);
@@ -391,13 +388,17 @@ public class MainComponents {
                     System.out.println("Error occured while closing file: "+ioe);
                 }
             }
+            
         } else{
             System.out.println("cannot open");
             return null;
-        }
-          
+        }     
     }
     
+    public String imageCurrentPath(){
+        return this.currentImagePath;
+    }
+     
     public void removePoint(Object e){ 
         JLabel point = (JLabel) e;
         this.getActualActiveFile().removePoint(Integer.parseInt(point.getName()));

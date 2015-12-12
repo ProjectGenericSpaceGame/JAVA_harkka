@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -830,7 +831,6 @@ public class GUI extends javax.swing.JFrame {
     };
     //tässä loput eventit
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
         if(availableProjectsModel.getSize() != 0){
             mainComponents.newFile(drawArea, availableFilesModel, availableFiles);
             updateRenamer();
@@ -858,11 +858,14 @@ public class GUI extends javax.swing.JFrame {
         //this.drawArea.setLayout(new GridLayout(0, 1));
     }
     
+    // Open settings
     private void settignseActionPerformed(java.awt.event.ActionEvent evt){
         settings.setVisible(true);
         this.settingss = new Settings();
         String path = settingss.getDefaultPath();
         defaultFilePath.setText(path);
+        String defaultname = settingss.getDefaulthFileName();
+        defaultFilename.setText(defaultname);
     }
     
     private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {
@@ -901,7 +904,6 @@ public class GUI extends javax.swing.JFrame {
         settings.dispose();
     }                                                 
 
-                                                
     private void settingsDefaultBrowseActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         FileSelector tiedosto = new FileSelector(2);
         String path = tiedosto.getPath();
@@ -917,21 +919,43 @@ public class GUI extends javax.swing.JFrame {
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) throws IOException {    
         Project opened = mainComponents.openProject();
         if (opened != null){
-        mainComponents.newProject(opened);
-        this.availableProjectsModel.addElement(opened.getName());
-        this.availableProjects.setSelectedIndex(mainComponents.getProjectAmount()-1);
-        mainComponents.setActiveProject(mainComponents.getProjectAmount()-1);
-        mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);
-        giveProjectName.dispose();
-        drawArea.setImg(null);
-        mainComponents.setActiveFile(-1);
-        updateRenamer();
-        repaint();
-        //System.out.println("kuvan polku on" +opened.getFile(0).getImgPath());
-        //System.out.println("tietoja kuvasta" +opened.getFile(0).getImgSrc());
-        }
-        else{
-            System.out.println("nope");
+            mainComponents.newProject(opened);
+            this.availableProjectsModel.addElement(opened.getName());
+            this.availableProjects.setSelectedIndex(mainComponents.getProjectAmount()-1);
+            mainComponents.setActiveProject(mainComponents.getProjectAmount()-1);
+            mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);
+            int count = mainComponents.getFilesAmount();
+            
+            for(int i= 0; i<= count-1; i++){
+                BufferedImage img = null;
+                // get the file extension of the image
+                String ext = opened.getFile(i).getImgPath();
+                int idx = ext.lastIndexOf('\\');
+                    if (idx > 0) {
+                        ext = ext.substring(idx+1);
+                        ext = ext.substring(ext.length()-5, ext.length()-1);
+                    }
+                    // create the name of the image    
+                String p = opened.getFile(i).getShapeName()+ext;
+                System.out.println("kuvan nimi on "+p);
+                
+                try {
+                    // read image from path
+                    img = ImageIO.read(new File(mainComponents.imageCurrentPath()+p));
+                    
+                } catch (IOException ex) {
+                  System.out.println("Error: "+ex);
+                }
+                // set read image to shapefile    
+                opened.getFile(i).setImgSrc(img);
+                giveProjectName.dispose();
+                drawArea.setImg(img);
+                updateRenamer();
+                repaint();
+            }
+           // mainComponents.setActiveFile(-1);
+        } else{
+            System.out.println("No project was added");
         }
     }                                           
 
