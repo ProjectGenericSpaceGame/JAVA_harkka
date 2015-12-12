@@ -11,8 +11,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -466,7 +467,11 @@ public class GUI extends javax.swing.JFrame {
         openProject.setText("Open Project");
         openProject.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openProjectActionPerformed(evt);
+                try {
+                    openProjectActionPerformed(evt);
+                } catch (IOException ex) {
+                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -856,6 +861,8 @@ public class GUI extends javax.swing.JFrame {
     private void settignseActionPerformed(java.awt.event.ActionEvent evt){
         settings.setVisible(true);
         this.settingss = new Settings();
+        String path = settingss.getDefaultPath();
+        defaultFilePath.setText(path);
     }
     
     private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {
@@ -907,7 +914,7 @@ public class GUI extends javax.swing.JFrame {
     }  
         
                                                
-    private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {    
+    private void openProjectActionPerformed(java.awt.event.ActionEvent evt) throws IOException {    
         Project opened = mainComponents.openProject();
         if (opened != null){
         mainComponents.newProject(opened);
@@ -922,6 +929,9 @@ public class GUI extends javax.swing.JFrame {
         repaint();
         //System.out.println("kuvan polku on" +opened.getFile(0).getImgPath());
         //System.out.println("tietoja kuvasta" +opened.getFile(0).getImgSrc());
+        }
+        else{
+            System.out.println("nope");
         }
     }                                           
 

@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.swing.*;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 /**
  *
@@ -232,18 +234,19 @@ public class MainComponents {
             shapeSplitter.jumpToWrite();
             }
     }
-    // projektin tallentaminen  
+    // Saving the project 
     public void saveProject(){
         this.toZip = new ArrayList<>();
         FileSelector selector = new FileSelector(3);
-        FileOutputStream fileOut;
+        FileOutputStream fileOut = null;
         String extension = "";
         ObjectOutputStream objOut = null;
         FileOutputStream fileZipOut = null;
         ZipOutputStream zipOut = null;
+        // if user selected a path
         if(selector.getPath() != "none"){
             try{
-                // Haetaan aktiivisen projektin nimi
+                // get the active projects name
                 String projectname = projects.get(activeProject).getName();
                 int nmb = projects.get(activeProject).getFileAmount()-1;
                 // kopioidaan kaikkien kuvien polku taulukkoon
@@ -254,52 +257,55 @@ public class MainComponents {
 
                     int idx = path.lastIndexOf('.');
                     if (idx > 0) {
-                        // Poistetaan kuvan polun perästä / -merkki jotta siitä ei tule kansiota
-                        // samalla otetaan tiedostopääte.
+                        // removes / -symbol at the end so it doesnt become a folder
                         extension = path.substring(idx).substring(0, path.substring(idx).length()-1);
                     }
                     String fileName = (selector.getPath()+"/"+imgName+extension);
                     this.toZip.add(i, fileName);
-                    //System.out.println("Kuvatiedoston nimi on: "+fileName);
-                    //Path FROM = Paths.get(path);
-                    //Path TO = Paths.get(fileName);
+                    Path FROM = Paths.get(path);
+                    Path TO = Paths.get(fileName);
                 
-                    //CopyOption[] options = new CopyOption[]{
+                    CopyOption[] options = new CopyOption[]{
                         //StandardCopyOption.REPLACE_EXISTING // vaarallinen vaihtoehto
-                      //  StandardCopyOption.COPY_ATTRIBUTES
-                    //};
-                    //java.nio.file.Files.copy(FROM, TO, options);
+                        StandardCopyOption.COPY_ATTRIBUTES
+                    };
+                    java.nio.file.Files.copy(FROM, TO, options);
                 }
                 String datName = selector.getPath()+projectname+".dat";
                 this.toZip.add(this.toZip.size()-1, datName);
                 fileOut = new FileOutputStream(new File(datName));
-                // kirjoitetaan avattuun streamiin
+                // write into stream
                 objOut = new ObjectOutputStream(fileOut);
-                // kirjoitetaan aktiivinen projekti virtaan
+                // write project
                 objOut.writeObject(projects.get(activeProject));
                 objOut.flush();
             
                 fileZipOut = new FileOutputStream(selector.getPath()+projectname+".zip");
                 zipOut = new ZipOutputStream(fileZipOut);
-                // Zipataan projekti
+                
+                // Zip the project
                 addToZip(zipOut);
             }catch(Exception e){
                 System.out.println("Error ocurred: "+e);
             } finally {
                 try {
-                    if (objOut != null && zipOut != null && fileZipOut != null ){
+                    if (objOut != null && zipOut != null && fileZipOut != null && fileOut != null ){
+                        fileOut.close();
                         objOut.close();
                         zipOut.close();
                         fileZipOut.close();
-                        System.out.println("suljin tiedostot niinkuin pitääkin");
+                        System.out.println("closing files");
+                        System.gc();
                     }
+                    // call for folder cleaner
+                    cleanFolder();
                 } catch (IOException ioe) {
                     System.out.println("Error occured while closing file: "+ioe);
                 }
             }
         }
     }
-    // Projektin zippaaminen. Tässä jotain ongelmia
+    // send project to zip file
     public void addToZip(ZipOutputStream zipOut) throws FileNotFoundException, IOException {
         FileInputStream fileIn = null;
         byte[] buffer = new byte[1024];
@@ -310,18 +316,16 @@ public class MainComponents {
             String name = "";
             int idx = filename.lastIndexOf('/');
                 if (idx > 0) {
-                    // Poistetaan kuvan polun perästä / -merkki jotta siitä ei tule kansiota
-                    // samalla otetaan tiedostopääte.
-                    name = filename.substring(idx);
+                    name = filename.substring(idx+1);
                 }
             ZipEntry zipEntry = new ZipEntry(name);
             zipOut.putNextEntry(zipEntry);
             fileIn = new FileInputStream(file);
-            
             int len;
             while ((len = fileIn.read(buffer)) > 0) {
                 zipOut.write(buffer, 0, len);
             }
+            
         }
         zipOut.closeEntry();
         if(fileIn != null){
@@ -329,14 +333,41 @@ public class MainComponents {
         }
         System.out.println("done");
     }
-    // projektin avaaminen
-    public Project openProject(){
+    
+    //clean folder after zipping is done
+    public void cleanFolder(){
+        // delete all the files but the zip
+        //cant delete the dat file...
+        for(int i = 0; i<= this.toZip.size()-1; i++){
+            File file = new File(this.toZip.get(i));
+            System.out.println("Deleting " +file.getName());
+            if (file.exists()){
+                if(file.delete()){
+                    System.out.println(file.getName() + " is deleted");
+                } else{
+                    System.out.println("Delete operation is failed.");
+                }
+            }
+        }
+    }
+    
+    // Open saved project
+    public Project openProject() throws IOException{
         FileInputStream fileIn;
         ObjectInputStream objIn = null;
-        FileSelector selector = new FileSelector(4);
-        if(selector.getPath() != null){
+        FileSelector selector = new FileSelector(3);
+        String dest = "D:/dontKillMe/";
+        System.out.println("Zipin polku on: "+selector.getPath());
+          try {
+        ZipFile zipFile = new ZipFile(selector.getPath());
+        zipFile.extractAll(dest);
+        } catch (ZipException e) {
+              System.out.println("Zip error: "+e);
+        }
+       // if user selected a path
+       if(selector.getPath() != null){
             try {
-                // avataan valittu .dat tiedosto  
+                //open selected .dat file 
                 fileIn = new FileInputStream(new File(selector.getPath()));
                 objIn = new ObjectInputStream(fileIn);
                 Project p = (Project)objIn.readObject();
@@ -357,6 +388,7 @@ public class MainComponents {
             System.out.println("cannot open");
             return null;
         }
+          
     }
     
     public void removePoint(Object e){ 
