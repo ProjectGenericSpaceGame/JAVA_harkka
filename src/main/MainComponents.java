@@ -237,7 +237,7 @@ public class MainComponents {
     // Saving the project 
     public void saveProject(){
         this.toZip = new ArrayList<>();
-        FileSelector selector = new FileSelector(3);
+        FileSelector selector = new FileSelector(2);
         FileOutputStream fileOut = null;
         String extension = "";
         ObjectOutputStream objOut = null;
@@ -296,9 +296,16 @@ public class MainComponents {
                         fileZipOut.close();
                         System.out.println("closing files");
                         System.gc();
+
                     }
                     // call for folder cleaner
-                    cleanFolder();
+                    try {
+                        //dirty fix to make sure that dat is actually closed. dat file stram is so slow to write that without this cleaning fill fail
+                        Thread.sleep(200);
+                        cleanFolder();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 } catch (IOException ioe) {
                     System.out.println("Error occured while closing file: "+ioe);
                 }
