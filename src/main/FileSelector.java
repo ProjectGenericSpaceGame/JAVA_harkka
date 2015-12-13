@@ -29,7 +29,6 @@ public class FileSelector extends GUI {
     public FileSelector(int usage){
          // Create new fileChooser
         JFileChooser chooser = new JFileChooser();
-        
          // change default size
         chooser.setPreferredSize(new Dimension(600,600));
         // remove default filter
@@ -91,6 +90,7 @@ public class FileSelector extends GUI {
             }
         }
     }
+    
     // return image
     public BufferedImage getImage(){
         return this.image;
@@ -104,9 +104,8 @@ public class FileSelector extends GUI {
            return this.path+"/";
        }   
     }
-    
+    // return the path of the zip
     public String getZipPath(){
         return this.zipPath;
     }
-    
-} // class
+} 

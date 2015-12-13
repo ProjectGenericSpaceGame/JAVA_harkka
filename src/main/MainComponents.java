@@ -137,22 +137,15 @@ public class MainComponents {
         }
     }
     
+    // saves coordinates
     public void setCoord(int x, int y, Graphics g,DrawArea drawArea){
         int y1;
         int x1;
         int x2 = x;
         int y2 = y;
-       
-        //ImageIcon icon = new ImageIcon(getClass().getResource("\\DottSmall.jpg"));
-        //ImageIcon icon = new ImageIcon("DottSmall.png");
         JLabel point = new JLabel();
-                //icon.paintIcon(this, g, 10, 200);
-       // point.setIcon(icon);
-        //point.setIcon(new ImageIcon("dotSmall.PNG"));
-        
         point.setBounds(x2 -5, y2 -5, 15, 15);
         point.setName((this.getActualActiveFile().getPoints().size()-1)+"");
-            //label.setBounds(x, y, width, height);
         System.out.println(point.getName());
         
         ArrayList<int[][]> pointsArray = projects.get(activeProject).getFile(activeFile).getPoints();
@@ -176,6 +169,7 @@ public class MainComponents {
         //return point;
         drawArea.add(point);
     }
+    
     public void removeFile(DrawArea drawArea,DefaultListModel listModel,JList filesList){
         //Here we first remove file object, then set list and finally make program to change file. changeFile must be last call because it also changes activeFile
         if(listModel.getSize() != 1){
@@ -193,6 +187,7 @@ public class MainComponents {
             activeFile = -1;
         }
     }
+    
     public void removeProject(DrawArea drawArea,DefaultListModel listModel,JList projectsList, DefaultListModel filesListModel){
         
         if(listModel.getSize() != 1){
@@ -217,6 +212,7 @@ public class MainComponents {
             activeFile = -1;
         }
     }
+    
     public void startWrite(DrawArea drawArea,String path, String fileName){
         ShapeSplitter shapeSplitter = new ShapeSplitter(drawArea.getImgData()[0],drawArea.getImgData()[1],projects.get(activeProject).getAllFiles(),fileName,path);
         if(projects.get(activeProject).getFile(activeFile).isSlice()){

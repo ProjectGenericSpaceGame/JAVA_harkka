@@ -309,11 +309,11 @@ public class GUI extends javax.swing.JFrame {
 
         fileNameTxtField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         fileNameTxtField.setText("physics.json");
-        fileNameTxtField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileNameTxtFieldActionPerformed(evt);
-            }
-        });
+        //fileNameTxtField.addActionListener(new java.awt.event.ActionListener() {
+          //  public void actionPerformed(java.awt.event.ActionEvent evt) {
+            //    fileNameTxtFieldActionPerformed(evt);
+           // }
+       // });
 
         filePathTxtField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         filePathTxtField.setText("C://CollisionDrawer/default/");
@@ -813,7 +813,8 @@ public class GUI extends javax.swing.JFrame {
         
         pack();
     }// </editor-fold>                        
-    //tässä on listaeventit
+    
+    // list events    
     private void availableFilesEvent(MouseEvent e){
         if(availableFilesModel.getSize() > 0){
             mainComponents.changeFile(availableFiles.getSelectedIndex(),drawArea);//Uudelleen piirtäminen tehdään mainComponentin ja DrawArean yhteistyönä jotta GUIn koodista ei tulisi clusterfuckkia
@@ -821,7 +822,8 @@ public class GUI extends javax.swing.JFrame {
             repaint();
         }
     };
-     private void availableProjectsEvent(MouseEvent e){
+    
+    private void availableProjectsEvent(MouseEvent e){
         if(availableProjectsModel.getSize() > 0){
             mainComponents.changeProject(availableProjects.getSelectedIndex(),drawArea,availableFilesModel);//sama kuin edellä
             this.availableFiles.setSelectedIndex(0);
@@ -829,21 +831,15 @@ public class GUI extends javax.swing.JFrame {
             repaint();
         }
     };
-    //tässä loput eventit
+    // list events end
+    
+    // import image 
     private void uploadFileActionPerformed(java.awt.event.ActionEvent evt) {                                            
         if(availableProjectsModel.getSize() != 0){
             mainComponents.newFile(drawArea, availableFilesModel, availableFiles);
             updateRenamer();
             repaint();
         }
-        //alla on esimerkki 2ulotteista taulukosta 
-        //int[][] point = new int[1][2];
-        //point[0][0]= 30;
-        //point[0][1] = 20;
-        //file.setPoints(point);
-        //System.out.println(file.getPoints().get(0));
-        //int test = file.removePoint(29, 21);
-        //System.out.println(file.getPoints().size());
     }
     
     // tämä metodi toteuttaa tapahtuman käsittelyn kun painetaan draw -painiketta.
@@ -858,16 +854,19 @@ public class GUI extends javax.swing.JFrame {
         //this.drawArea.setLayout(new GridLayout(0, 1));
     }
     
-    // Open settings
+    // Open settings dialog
     private void settignseActionPerformed(java.awt.event.ActionEvent evt){
         settings.setVisible(true);
         this.settingss = new Settings();
+        // set default path if chosen before
         String path = settingss.getDefaultPath();
         defaultFilePath.setText(path);
+        // set defaultfilename if chosen before
         String defaultname = settingss.getDefaulthFileName();
         defaultFilename.setText(defaultname);
     }
     
+    // delete point (blue square) on JPanel
     private void deletePointToolActionPerformed(java.awt.event.ActionEvent evt) {
         drawTool.setSelected(false);
         drawArea.setStatus(2);
@@ -897,13 +896,15 @@ public class GUI extends javax.swing.JFrame {
         }
     }
     
+    //save settings button on settings dialog
     private void settingSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         String name = defaultFilename.getText();
         settingss.setDefaultFileName(name);
         this.settingss.saveSettings();
         settings.dispose();
     }                                                 
-
+    
+    // browse button on settings dialog
     private void settingsDefaultBrowseActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         FileSelector tiedosto = new FileSelector(2);
         String path = tiedosto.getPath();
@@ -911,11 +912,11 @@ public class GUI extends javax.swing.JFrame {
         defaultFilePath.setText(path);
     } 
     
+    // cancel button on settings dialog
     private void settingsCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                     
         settings.dispose();
     }  
-        
-                                               
+    // open a project                                               
     private void openProjectActionPerformed(java.awt.event.ActionEvent evt) throws IOException {    
         Project opened = mainComponents.openProject();
         if (opened != null){
@@ -958,19 +959,21 @@ public class GUI extends javax.swing.JFrame {
             System.out.println("No project was added");
         }
     }                                           
-
+    // new project
     private void newProjectActionPerformed(java.awt.event.ActionEvent evt) {                                           
         giveProjectName.setVisible(true);
     } 
-
+    
+    // save project
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {                                     
         mainComponents.saveProject();
     }                                    
-
+    
+    // cancel uploading 
     private void refDialCancelActionPerformed(java.awt.event.ActionEvent evt) {                                              
         upload.dispose();
     }                                             
-
+    
     private void refDialOKActionPerformed(java.awt.event.ActionEvent evt) {                                          
         // TODO add your handling code here:
         if(upload.getName() != "project"){
@@ -982,6 +985,7 @@ public class GUI extends javax.swing.JFrame {
         upload.dispose();
     }                                         
     
+    // rename project
     private void picScrFieldMouseClicked(java.awt.event.ActionEvent evt) {                                         
         if((evt == null && availableProjectsModel.getSize() != 0) || (availableProjectsModel.getSize() != 0 && !(evt.getActionCommand().equals("renameProject")))){ 
             upload.setVisible(true);
@@ -993,35 +997,43 @@ public class GUI extends javax.swing.JFrame {
         }
     }                                        
 
-    private void fileNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here. No!:
-    }                                           
+    //private void fileNameTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        // no handler?
+    //}                                           
 
+    // write JSON button on COnfirm JSON dialog
     private void writeJSONBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             
         writeJSONconfirm.dispose();
         mainComponents.startWrite(drawArea, filePathTxtField.getText(),fileNameTxtField.getText());
     }
+    
+    // cancel button on confirm JSON dialog
     private void cancelWriteBtnActionPerformed(java.awt.event.ActionEvent evt) {                                             
         writeJSONconfirm.dispose();
     }    
-     private void writeJSONMainBtnActionPerformed(java.awt.event.ActionEvent evt) {
+    
+    // write JSON button on confirm JSON dialog
+    private void writeJSONMainBtnActionPerformed(java.awt.event.ActionEvent evt) {
         writeJSONconfirm.setVisible(true);
         Settings setting = new Settings();
         String path = setting.getDefaultPath();
         String name = setting.getDefaulthFileName();
         filePathTxtField.setText(path);
-        //fileNameTxtField.setText(name);
         fileNameTxtField.setText(mainComponents.getProjectName());
-        // fileNameTxtField.setText(mainComponents.getProjectName());
     }
+    
+    // JSON save path browse button
     private void JSONPathBtnPerformed(java.awt.event.ActionEvent evt){
         FileSelector file = new FileSelector(2);
         filePathTxtField.setText(file.getPath());   
-    } 
+    }
+    
+    // rename project cancel
     private void giveProjectNameCancelActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         giveProjectName.dispose();
     }                                                     
 
+    // rename project 
     private void giveProjectNameOKActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         // TODO add your handling code here:
         Project newProj = new Project(this.newProjectNameField.getText());
@@ -1036,6 +1048,7 @@ public class GUI extends javax.swing.JFrame {
         updateRenamer();
         repaint();
     }
+    
     private void leftNaviBrowersActionPerformed(java.awt.event.ActionEvent evt){
         String source = evt.getActionCommand();
         if(source == "renameProject"){
@@ -1056,6 +1069,7 @@ public class GUI extends javax.swing.JFrame {
             }
         }
     }
+    
     private void updateRenamer(){
         if(availableFilesModel.getSize() != 0){
             picScrField.setText(mainComponents.getActualActiveFile().getShapeName());
